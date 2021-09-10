@@ -6,7 +6,12 @@ Vue.use(Vuex)
 
 export const mutations = {
   newGame(state) {
-    state.cards = JSON.parse(JSON.stringify(TSCards))
+    if (state.cards === undefined) {
+      state.cards = JSON.parse(JSON.stringify(TSCards))
+    }
+    for (let i = 0; i < TSCards.length; i++) {
+      state.cards[i].state = TSCards[i].state
+    }
   },
   moveCard(state, data) {
     data.card.state = data.destination
@@ -23,7 +28,7 @@ export const mutations = {
 
 export default new Vuex.Store({
   state: {
-    cards: TSCards
+    cards: JSON.parse(JSON.stringify(TSCards))
   },
   mutations,
   actions: {

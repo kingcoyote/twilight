@@ -1,6 +1,9 @@
 <template>
   <b-container class="mt-5">
     <h1>Twilight Strategy Card Tracker</h1>
+    <b-button-group>
+      <b-button @click="newGame()">New Game</b-button>
+    </b-button-group>
     <b-row class="mb-3">
       <b-col sm>
         <h3>USA Hand</h3>
@@ -32,6 +35,7 @@
 
 <script>
 import TSCardCollection from './components/TSCardCollection.vue'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Twilight',
@@ -42,6 +46,9 @@ export default {
   },
   components: {
     TSCardCollection
+  },
+  methods: {
+    ...mapMutations(['newGame'])
   }
 }
 </script>
