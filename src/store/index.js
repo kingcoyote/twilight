@@ -6,13 +6,18 @@ Vue.use(Vuex)
 
 export const mutations = {
   newGame(state) {
-    state.cards = TSCards
+    state.cards = JSON.parse(JSON.stringify(TSCards))
   },
   moveCard(state, data) {
     data.card.state = data.destination
   },
-  reshuffle(state, data) {
+  reshuffle(state) {
     state.cards.forEach((card) => card.state = card.state === "discard" ? "deck" : card.state);
+  },
+  addPhase(state, data) {
+    state.cards
+      .filter((card) => card.phase === data.phase)
+      .forEach((card) => card.state = "deck")
   }
 }
 

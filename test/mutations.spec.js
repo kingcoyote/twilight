@@ -1,7 +1,11 @@
 import { expect } from 'chai'
 import { mutations } from '../src/store/index.js'
 
-const { newGame, moveCard, reshuffle } = mutations
+const { newGame, moveCard, reshuffle, addPhase } = mutations
+
+function filterCards(cards, state) {
+    return cards.filter((card) => card.state === state)
+}
 
 describe('twilight store', () => {
     it('creates new deck', () => {
@@ -49,5 +53,16 @@ describe('twilight store', () => {
         expect(state.cards[2].state).to.equal("ussr")
         expect(state.cards[3].state).to.equal("removed")
         expect(state.cards[4].state).to.equal("deck")
+    })
+    it("adds mid war phase cards", () => {
+        const state = { }
+        newGame(state)
+
+        let deckCards = filterCards(state.cards, "deck")
+        expect(deckCards.length).to.equal(36)
+
+        addPhase(state, { phase: "mid" })
+        deckCards = filterCards(state.cards, "deck")
+        expect(deckCards.length).to.equal(39)
     })
 })
