@@ -10,6 +10,9 @@ export const mutations = {
   },
   moveCard(state, data) {
     data.card.state = data.destination
+  },
+  reshuffle(state, data) {
+    state.cards.forEach((card) => card.state = card.state === "discard" ? "deck" : card.state);
   }
 }
 
