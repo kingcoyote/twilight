@@ -5,12 +5,28 @@ import TSCards from './ts_cards.js'
 Vue.use(Vuex)
 
 export const mutations = {
-  newGame(state) {
-    if (state.cards === undefined) {
-      state.cards = JSON.parse(JSON.stringify(TSCards))
+  newGame(state, data) {
+    const defaultCards = JSON.parse(JSON.stringify(TSCards))
+    
+    // if optional is true, turn disabled cards to inactive
+    if (data && (data.optional ?? false)) {
+      defaultCards
+        .filter((card) => (card.flags || []).includes("optional"))
+        .forEach((card) => card.state = "inactive")
+    } else {
+
     }
-    for (let i = 0; i < TSCards.length; i++) {
-      state.cards[i].state = TSCards[i].state
+
+    // set all early inactive cards to deck
+    defaultCards
+      .filter((card) => card.phase === "early" && card.state !== "disabled")
+      .forEach((card) => card.state = "deck")
+
+    if (state.cards === undefined) {
+      state.cards = defaultCards
+    }
+    for (let i = 0; i < defaultCards.length; i++) {
+      state.cards[i].state = defaultCards[i].state
     }
   },
   moveCard(state, data) {

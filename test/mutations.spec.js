@@ -8,17 +8,17 @@ function filterCards(cards, state) {
 }
 
 describe('twilight store', () => {
-    it('creates new deck', () => {
+    it('creates new game with default cards', () => {
         const state = { }
         newGame(state)
         expect(state.hasOwnProperty("cards")).to.equal(true);
-        expect(state.cards.length).to.equal(42);
-        for (let i = 0; i < 36; i++) {
-            expect(state.cards[i].state).to.equal("deck");
-        }
-        for (let i = 36; i < 42; i++) {
-            expect(state.cards[i].state).to.equal("inactive");
-        }
+        expect(filterCards(state.cards, "deck").length).to.equal(36)
+        expect(filterCards(state.cards, "inactive").length).to.equal(6)
+    })
+    it('creates new game with optional cards (104-110)', () => {
+        const state = { }
+        newGame(state, { optional: true })
+        expect(filterCards(state.cards, "deck").length).to.equal(39)
     })
     it('moves cards between states', () => {
         const state = { }
