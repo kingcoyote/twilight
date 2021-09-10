@@ -5,12 +5,12 @@ import TSCards from './ts_cards.js'
 Vue.use(Vuex)
 
 export const mutations = {
+  newGame(state) {
+    state.cards = TSCards
+  },
   moveCard(state, data) {
     console.log(data)
     data.card.state = data.destination
-  },
-  increment(state) {
-    state.count++
   }
 }
 
