@@ -1,19 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import TSCards from './ts_cards'
+import TSCards from './ts_cards.js'
 
 Vue.use(Vuex)
+
+export const mutations = {
+  moveCard(state, data) {
+    console.log(data)
+    data.card.state = data.destination
+  },
+  increment(state) {
+    state.count++
+  }
+}
 
 export default new Vuex.Store({
   state: {
     cards: TSCards
   },
-  mutations: {
-    moveCard(state, data) {
-      console.log(data)
-      data.card.state = data.destination
-    }
-  },
+  mutations,
   actions: {
   },
   modules: {
