@@ -9,7 +9,6 @@ export const mutations = {
     state.cards = TSCards
   },
   moveCard(state, data) {
-    console.log(data)
     data.card.state = data.destination
   }
 }

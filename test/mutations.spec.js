@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { mutations } from '../src/store/index.js'
 
-const { newGame, increment } = mutations
+const { newGame, moveCard } = mutations
 
 describe('twilight store', () => {
     it('creates new deck', () => {
@@ -15,5 +15,22 @@ describe('twilight store', () => {
         for (let i = 36; i < 42; i++) {
             expect(state.cards[i].state).to.equal("inactive");
         }
+    })
+    it('moves cards between states', () => {
+        const state = { }
+        newGame(state)
+        expect(state.hasOwnProperty("cards")).to.equal(true);
+
+        moveCard(state, { card: state.cards[0], destination: "ussr" })
+        expect(state.cards[0].state).to.equal("ussr")
+
+        moveCard(state, { card: state.cards[1], destination: "usa" })
+        expect(state.cards[1].state).to.equal("usa")
+
+        moveCard(state, { card: state.cards[2], destination: "removed" })
+        expect(state.cards[2].state).to.equal("removed")
+
+        moveCard(state, { card: state.cards[3], destination: "discard" })
+        expect(state.cards[3].state).to.equal("discard")
     })
 })
