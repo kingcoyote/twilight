@@ -41,11 +41,18 @@ export const mutations = {
   }
 }
 
+export const getters = {
+  cardsWithState: (state) => (targetState) => {
+    return state.cards.filter((card) => card.state === targetState)
+  }
+}
+
 export default new Vuex.Store({
   state: {
     cards: JSON.parse(JSON.stringify(TSCards))
   },
   mutations,
+  getters,
   actions: {
   },
   modules: {

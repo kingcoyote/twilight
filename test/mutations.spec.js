@@ -1,24 +1,20 @@
 import { expect } from 'chai'
-import { mutations } from '../src/store/index.js'
+import { mutations, getters } from '../src/store/index.js'
 
 const { newGame, moveCard, reshuffle, addPhase } = mutations
-
-function filterCards(cards, state) {
-    return cards.filter((card) => card.state === state)
-}
 
 describe('twilight store', () => {
     it('creates new game with default cards', () => {
         const state = { }
         newGame(state)
         expect(state.hasOwnProperty("cards")).to.equal(true);
-        expect(filterCards(state.cards, "deck").length).to.equal(36)
-        expect(filterCards(state.cards, "inactive").length).to.equal(6)
+        expect(getters.cardsWithState(state)("deck").length).to.equal(36)
+        expect(getters.cardsWithState(state)("inactive").length).to.equal(6)
     })
     it('creates new game with optional cards (104-110)', () => {
         const state = { }
         newGame(state, { optional: true })
-        expect(filterCards(state.cards, "deck").length).to.equal(39)
+        expect(getters.cardsWithState(state)("deck").length).to.equal(39)
     })
     it('moves cards between states', () => {
         const state = { }
@@ -58,11 +54,22 @@ describe('twilight store', () => {
         const state = { }
         newGame(state)
 
-        let deckCards = filterCards(state.cards, "deck")
-        expect(deckCards.length).to.equal(36)
+        expect(getters.cardsWithState(state)("deck").length).to.equal(36)
 
         addPhase(state, { phase: "mid" })
-        deckCards = filterCards(state.cards, "deck")
-        expect(deckCards.length).to.equal(39)
+        expect(getters.cardsWithState(state)("deck").length).to.equal(39)
+    })
+    it("gets cards with state", () => {
+        const state = { }
+        newGame(state)
+
+        let cardsWithState = getters.cardsWithState(state)
+        expect(cardsWithState("deck").length).to.equal(36)
+
+        moveCard(state, { card: state.cards[0], destination: "ussr" })
+        expect(cardsWithState("ussr").length).to.equal(1)
+        expect(cardsWithState("deck").length).to.equal(35)
+        expect(cardsWithState("usa").length).to.equal(0)
+        
     })
 })
