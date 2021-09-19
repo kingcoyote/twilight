@@ -13,8 +13,6 @@ export const mutations = {
       defaultCards
         .filter((card) => (card.flags || []).includes("optional"))
         .forEach((card) => card.state = "inactive")
-    } else {
-
     }
 
     // set all early inactive cards to deck
@@ -25,6 +23,7 @@ export const mutations = {
     if (state.cards === undefined) {
       state.cards = defaultCards
     }
+
     for (let i = 0; i < defaultCards.length; i++) {
       state.cards[i].state = defaultCards[i].state
     }

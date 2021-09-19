@@ -3,14 +3,14 @@
     <b-card-group deck :class="['ts-card-collection', 'hand', name]" v-if="display === 'hand'">
         <TSCardHand 
           v-for="card in cards"
-          :key=card.title
+          :key=card.number
           :card="card"
           :collection="name" />
     </b-card-group>
     <div :class="['ts-card-collection', 'stack', name]" v-if="display === 'stack'">
         <TSCardStack 
           v-for="card in cards" 
-          :key=card.title
+          :key=card.number
           :card="card"
           :collection="name" />
     </div>
