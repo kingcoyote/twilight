@@ -1,11 +1,16 @@
 <template>
-  <b-card sm :class="['ts-card', 'float-left', 'm-1', card.phase, card.side]" v-if="card.state === collection">
-    <b-card-body>
-      <TSCardTitle :card=card />
-      <div class="text p-3 text-center">{{ card.text }}</div>
-      <div class="remove p-3" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
-    </b-card-body>
-  </b-card>
+  <div>
+    <b-card 
+      v-for="card in cards"
+      :key="card.number"
+      sm :class="['ts-card', 'float-left', 'm-1', card.phase, card.side]">
+      <b-card-body>
+        <TSCardTitle :card=card />
+        <div class="text p-3 text-center">{{ card.text }}</div>
+        <div class="remove p-3" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
+      </b-card-body>
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -17,9 +22,7 @@ export default {
     TSCardTitle
   },
   props: {
-    card: Object,
-    collection: String,
-    display: String
+    cards: Array
   },
 }
 </script>

@@ -1,7 +1,12 @@
 <template>
-  <b-card :class="['ts-card', 'mt-1', card.phase, card.side]" v-if="card.state === collection">
-      <TSCardTitle :card=card />
-  </b-card>
+  <div>
+    <b-card 
+      v-for="card in cards"
+      :key="card.number"
+      :class="['ts-card', 'mt-1', card.phase, card.side]">
+        <TSCardTitle :card=card />
+    </b-card>
+  </div>
 </template>
 
 <script>
@@ -13,9 +18,7 @@ export default {
     TSCardTitle
   },
   props: {
-    card: Object,
-    collection: String,
-    display: String
+    cards: Array
   },
 }
 </script>
