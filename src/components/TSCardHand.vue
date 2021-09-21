@@ -33,5 +33,5 @@ export default {
 </script>
 
 <style scoped>
-  div.ts-card { max-width:25%; }
+  div.ts-card { width:25%; }
 </style>
