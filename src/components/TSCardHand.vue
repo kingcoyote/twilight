@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-card-group deck :class="['ts-card-collection', 'hand']"> 
     <b-card 
       v-for="card in cards"
       :key="card.number"
@@ -10,7 +10,7 @@
         <div class="remove p-3" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
       </b-card-body>
     </b-card>
-  </div>
+  </b-card-group>
 </template>
 
 <script>
