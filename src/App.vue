@@ -7,13 +7,13 @@
     <b-row class="mb-3">
       <b-col sm  id="usa">
         <h3>USA Hand</h3>
-        <TSCardHand :cards='cardsInLocation("usa")' />
+        <TSCardHand :cards='cardsInLocation("usa")' cols="4" />
       </b-col>
     </b-row>
     <b-row class="mb-3">
       <b-col sm id="ussr">
         <h3>USSR Hand</h3>
-        <TSCardHand :cards='cardsInLocation("ussr")' />
+        <TSCardHand :cards='cardsInLocation("ussr")' cols="4" />
       </b-col>
     </b-row>
     <b-row class="mb-3">

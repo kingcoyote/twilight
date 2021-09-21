@@ -1,16 +1,20 @@
 <template>
-  <b-card-group deck :class="['ts-card-collection', 'hand']"> 
-    <b-card 
-      v-for="card in cards"
-      :key="card.number"
-      sm :class="['ts-card', 'float-left', 'm-1', card.phase, card.side]">
-      <b-card-body>
-        <TSCardTitle :card=card />
-        <div class="text p-3 text-center">{{ card.text }}</div>
-        <div class="remove p-3" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
-      </b-card-body>
-    </b-card>
-  </b-card-group>
+  <div>
+    <b-card-group deck v-for="row in rows"
+      :key=row.id
+      :class="['ts-card-collection', 'hand']"> 
+      <b-card 
+        v-for="card in row.cards"
+        :key="card.number"
+        sm :class="['ts-card', 'float-left', 'm-1', card.phase, card.side]">
+        <b-card-body>
+          <TSCardTitle :card=card />
+          <div class="text p-3 text-center">{{ card.text }}</div>
+          <div class="remove p-3" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
+        </b-card-body>
+      </b-card>
+    </b-card-group>
+  </div>
 </template>
 
 <script>
@@ -22,8 +26,18 @@ export default {
     TSCardTitle
   },
   props: {
-    cards: Array
+    cards: Array,
+    cols: Number
   },
+  computed: {
+    rows: function() {
+      let rows = []
+      for (let i = 0; i < this.cards.length / this.cols; i++) {
+        rows.push({id: i, cards:this.cards.slice(i*this.cols, i*this.cols+this.cols)})
+      }
+      return rows;
+    }
+  }
 }
 </script>
 
