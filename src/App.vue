@@ -7,27 +7,27 @@
     <b-row class="mb-3">
       <b-col sm  id="usa">
         <h3>USA Hand</h3>
-        <TSCardHand :cards='cardsInLocation("usa")' cols="4" />
+        <TSCardHand :cards='cardsInLocation("usa")' cols=4 />
       </b-col>
     </b-row>
     <b-row class="mb-3">
       <b-col sm id="ussr">
         <h3>USSR Hand</h3>
-        <TSCardHand :cards='cardsInLocation("ussr")' cols="4" />
+        <TSCardHand :cards='cardsInLocation("ussr")' cols=4 />
       </b-col>
     </b-row>
     <b-row class="mb-3">
-      <b-col sm id="deck">
+      <b-col sm id="deck" class="ts-stack">
         <h3>Deck</h3>
-        <TSCardStack :cards='cardsInLocation("deck")' />
+        <TSCard v-for='card in cardsInLocation("deck")' :key=card.number :card=card display="min"/> 
       </b-col>
-      <b-col sm id="discard">
+      <b-col sm id="discard" class="ts-stack">
         <h3>Discard</h3>
-        <TSCardStack :cards='cardsInLocation("discard")' />
+        <TSCard v-for='card in cardsInLocation("discard")' :key=card.number :card=card display="min"/> 
       </b-col>
-      <b-col sm id="removed">
+      <b-col sm id="removed" class="ts-stack">
         <h3>Removed</h3>
-        <TSCardStack :cards='cardsInLocation("removed")' />
+        <TSCard v-for='card in cardsInLocation("removed")' :key=card.number :card=card display="min"/> 
       </b-col>
     </b-row>
   </b-container>
@@ -35,7 +35,7 @@
 
 <script>
 import TSCardHand from './components/TSCardHand.vue'
-import TSCardStack from './components/TSCardStack.vue'
+import TSCard from './components/TSCard.vue'
 import { mapMutations, mapGetters } from 'vuex'
 
 export default {
@@ -47,7 +47,7 @@ export default {
   },
   components: {
     TSCardHand,
-    TSCardStack
+    TSCard
   },
   methods: {
     ...mapMutations(['newGame']),
