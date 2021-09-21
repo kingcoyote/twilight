@@ -25,7 +25,7 @@ export const mutations = {
     }
 
     for (let i = 0; i < defaultCards.length; i++) {
-      state.cards[i].state = defaultCards[i].state
+      state.cards[i].location = defaultCards[i].location
     }
   },
   moveCard(state, data) {
@@ -47,7 +47,7 @@ export const getters = {
   }
 }
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     cards: JSON.parse(JSON.stringify(TSCards))
   },
@@ -58,3 +58,7 @@ export default new Vuex.Store({
   modules: {
   }
 })
+
+mutations.newGame(store.state, { optional: false })
+
+export default store;

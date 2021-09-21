@@ -70,6 +70,18 @@ describe('twilight store', () => {
         expect(cardsInLocation("ussr").length).to.equal(1)
         expect(cardsInLocation("deck").length).to.equal(35)
         expect(cardsInLocation("usa").length).to.equal(0)
-        
+    })
+    it("resets game correctly", () => {
+        const state = { }
+        newGame(state)
+
+        moveCard(state, { card: state.cards[0], destination: "discard" })
+        moveCard(state, { card: state.cards[1], destination: "usa" })
+        moveCard(state, { card: state.cards[2], destination: "ussr" })
+        moveCard(state, { card: state.cards[3], destination: "removed" })
+        moveCard(state, { card: state.cards[4], destination: "discard" })
+
+        newGame(state)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
     })
 })
