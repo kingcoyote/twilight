@@ -1,7 +1,7 @@
 <template>
   <b-card sm: :class="['ts-card', 'float-left', 'm-1', card.phase, card.side]">
     <b-card-body>
-      <div class="title m-1" @click="myDisplay = myDisplay === 'full' ? 'min' : 'full' ">
+      <div class="title mx-1 mt-1 mb-0" @click="myDisplay = myDisplay === 'full' ? 'min' : 'full' ">
         <svg height="46" width="46" class="star">
           <defs>
             <pattern id="neutralStripe" width="46" height="46" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse">
@@ -28,8 +28,8 @@
         </b-dropdown>
       </div>
       <div v-if="myDisplay === 'full'">
-        <div class="text p-3 text-center">{{ card.text }}</div>
-        <div class="remove p-3" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
+        <div class="text p-2 pt-1 text-center" >{{ cardDescription }}</div>
+        <div class="remove p-2" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
       </div>
     </b-card-body>
   </b-card>
@@ -51,13 +51,27 @@ export default {
   },
   methods: {
     ...mapMutations(['moveCard'])
+  },
+  computed: {
+    cardDescription: function() {
+      let markup = this.card.text;
+      // TODO add italics, line breaks, bold, other fancy stuff
+      return markup;
+    }
   }
 }
 </script>
 
 <style>
+  div.ts-card { border: none; border-radius: 0; }
+
   div.ts-stack div.ts-card { width:100%; }
-  div.ts-hand div.ts-card { width:25%; }
+  @media screen and (max-width:748px) {
+    div.ts-hand div.ts-card { width:100%; }
+  }
+  @media screen and (min-width:748px) {
+    div.ts-hand div.ts-card { max-width:calc(25% - 8px); background-color: #eee; }
+  }
   div.ts-card div.card-body { padding:0; }
   div.ts-card svg { display:inline-block; margin-top:-10px; margin-bottom:-10px; }
 
@@ -75,6 +89,8 @@ export default {
   div.ts-card.early div.title { background-color:rgb(0, 171, 202); }
   div.ts-card.mid div.title { background-color:rgb(0,119,139); }
   div.ts-card.late div.title { background-color:rgb(0,79,92); }
+
+  div.ts-card div.remove { font-style:italic; font-weight:bold; color:#cc3333; text-align:center; }
 
   div.dropdown.card-opts button { padding:0 5px; margin:2px 0; }
 </style>

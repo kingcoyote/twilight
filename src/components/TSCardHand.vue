@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <b-container>
     <b-card-group deck v-for="row in rows"
       :key=row.id
-      :class="['ts-card-collection', 'hand']"> 
+      :class="['ts-card-collection', 'ts-hand']"> 
       <TSCard v-for="card in row.cards" :key=card.number :card=card display="full"/> 
     </b-card-group>
-  </div>
+  </b-container>
 </template>
 
 <script>

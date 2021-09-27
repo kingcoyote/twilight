@@ -1,22 +1,34 @@
 <template>
-  <b-container class="mt-5">
-    <h1>Twilight Strategy Card Tracker</h1>
-    <b-button-group>
-      <b-button @click="newGame()">New Game</b-button>
-    </b-button-group>
-    <b-row class="mb-3">
-      <b-col sm  id="usa">
-        <h3>USA Hand</h3>
-        <TSCardHand :cards='cardsInLocation("usa")' cols=4 />
+  <b-container>
+    <b-row>
+      <b-col sm>
+        <h1>TS Track</h1>
+      </b-col>
+      <b-col sm>
+        <b-button-group class="my-1 mx-3">
+          <b-button squared variant="primary" @click="newGame()">New Game</b-button>
+          <b-button squared variant="success">Save</b-button>
+          <b-button squared variant="warning">Load</b-button>
+        </b-button-group>
+        <b-button-group class="my-1 mx-3">
+          <b-button squared variant="primary">Reshuffle</b-button>
+          <b-button squared variant="warning">Add Mid-War Cards</b-button>
+        </b-button-group>
       </b-col>
     </b-row>
-    <b-row class="mb-3">
-      <b-col sm id="ussr">
-        <h3>USSR Hand</h3>
-        <TSCardHand :cards='cardsInLocation("ussr")' cols=4 />
+    <b-row id="usa" class="mb-3">
+      <b-col sm>
+        <h3>USA ({{ usaCards.length }})</h3>
+        <TSCardHand :cards=usaCards cols=4 />
       </b-col>
     </b-row>
-    <b-row class="mb-3">
+    <b-row id="ussr" class="mb-3">
+      <b-col sm >
+        <h3>USSR ({{ ussrCards.length }})</h3>
+        <TSCardHand :cards=ussrCards cols=4 />
+      </b-col>
+    </b-row>
+    <b-row id="stacks" class="mb-3">
       <b-col sm id="deck" class="ts-stack">
         <h3>Deck</h3>
         <TSCard v-for='card in cardsInLocation("deck")' :key=card.number :card=card display="min"/> 
@@ -53,11 +65,18 @@ export default {
     ...mapMutations(['newGame']),
   },
   computed: {
-    ...mapGetters(['cardsInLocation'])
+    ...mapGetters(['cardsInLocation']),
+    usaCards: function() {
+      return this.$store.getters.cardsInLocation("usa");
+    },
+    ussrCards: function() {
+      return this.$store.getters.cardsInLocation("ussr");
+    }
   }
 }
 </script>
 
 <style>
-
+h3 { border-bottom:1px solid black; }
+div#usa, div#ussr, div#stacks { min-height: calc(33vh - 56px)}
 </style>
