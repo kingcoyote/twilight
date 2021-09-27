@@ -53,10 +53,11 @@ describe('twilight store', () => {
     it("adds mid war phase cards", () => {
         const state = { }
         newGame(state)
-
+        expect(state.phase).to.equal("early")
         expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
 
         addPhase(state, { phase: "mid" })
+        expect(state.phase).to.equal("mid")
         expect(getters.cardsInLocation(state)("deck").length).to.equal(39)
     })
     it("gets cards with state", () => {

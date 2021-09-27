@@ -27,6 +27,8 @@ export const mutations = {
     for (let i = 0; i < defaultCards.length; i++) {
       state.cards[i].location = defaultCards[i].location
     }
+
+    state.phase = "early"
   },
   moveCard(state, data) {
     data.card.location = data.destination
@@ -38,6 +40,8 @@ export const mutations = {
     state.cards
       .filter((card) => card.phase === data.phase)
       .forEach((card) => card.location = "deck")
+
+    state.phase = data.phase;
   }
 }
 
@@ -49,7 +53,8 @@ export const getters = {
 
 const store = new Vuex.Store({
   state: {
-    cards: JSON.parse(JSON.stringify(TSCards))
+    cards: JSON.parse(JSON.stringify(TSCards)),
+    phase: "early"
   },
   mutations,
   getters,
