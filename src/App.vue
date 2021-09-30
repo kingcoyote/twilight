@@ -11,8 +11,9 @@
           <b-button squared variant="warning">Load</b-button>
         </b-button-group>
         <b-button-group class="my-1 mx-3">
-          <b-button squared variant="primary">Reshuffle</b-button>
-          <b-button squared variant="warning">Add Mid-War Cards</b-button>
+          <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
+          <b-button squared v-if="phase === 'early'" variant="warning" @click="addPhase('mid')">Add Mid-War Cards</b-button>
+          <b-button squared v-if="phase === 'mid'" variant="warning" @click="addPhase('late')">Add Late-War Cards</b-button>
         </b-button-group>
       </b-col>
     </b-row>
@@ -30,16 +31,16 @@
     </b-row>
     <b-row id="stacks" class="mb-3">
       <b-col sm id="deck" class="ts-stack">
-        <h3>Deck</h3>
-        <TSCard v-for='card in cardsInLocation("deck")' :key=card.number :card=card display="min"/> 
+        <h3>Deck ({{ deckCards.length }})</h3>
+        <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
       </b-col>
       <b-col sm id="discard" class="ts-stack">
-        <h3>Discard</h3>
-        <TSCard v-for='card in cardsInLocation("discard")' :key=card.number :card=card display="min"/> 
+        <h3>Discard ({{ discardCards.length }})</h3>
+        <TSCard v-for='card in discardCards' :key=card.number :card=card display="min"/> 
       </b-col>
       <b-col sm id="removed" class="ts-stack">
-        <h3>Removed</h3>
-        <TSCard v-for='card in cardsInLocation("removed")' :key=card.number :card=card display="min"/> 
+        <h3>Removed ({{ removedCards.length }})</h3>
+        <TSCard v-for='card in removedCards' :key=card.number :card=card display="min"/> 
       </b-col>
     </b-row>
   </b-container>
@@ -54,7 +55,8 @@ export default {
   name: 'Twilight',
   data: function() {
     return {
-      cards: this.$store.state.cards
+      cards: this.$store.state.cards,
+      phase: this.$store.state.phase
     }
   },
   components: {
@@ -62,7 +64,7 @@ export default {
     TSCard
   },
   methods: {
-    ...mapMutations(['newGame']),
+    ...mapMutations(['newGame', 'addPhase', 'reshuffle']),
   },
   computed: {
     ...mapGetters(['cardsInLocation']),
@@ -71,6 +73,18 @@ export default {
     },
     ussrCards: function() {
       return this.$store.getters.cardsInLocation("ussr");
+    },
+    deckCards: function() {
+      return this.$store.getters.cardsInLocation("deck");
+    },
+    discardCards: function() {
+      return this.$store.getters.cardsInLocation("discard");
+    },
+    removedCards: function() {
+      return this.$store.getters.cardsInLocation("removed");
+    },
+    savedGames: function() {
+      return JSON.parse(localStorage.getItem('savedGames')) || [];
     }
   }
 }
