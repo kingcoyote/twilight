@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { mutations, getters } from '../src/store/index.js'
 
-const { newGame, moveCard, reshuffle, addPhase } = mutations
+const { newGame, loadGame, moveCard, reshuffle, addPhase } = mutations
 
 describe('twilight store', () => {
     it('creates new game with default cards', () => {
@@ -15,6 +15,9 @@ describe('twilight store', () => {
         const state = { }
         newGame(state, { optional: true })
         expect(getters.cardsInLocation(state)("deck").length).to.equal(39)
+    })
+    it("loads game from json string", () => {
+        
     })
     it('moves cards between states', () => {
         const state = { }

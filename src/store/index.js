@@ -24,16 +24,21 @@ export const mutations = {
       state.cards = defaultCards
     }
 
-    for (let i = 0; i < defaultCards.length; i++) {
-      state.cards[i].location = defaultCards[i].location
+    state.name = new Date().toISOString()
+    mutations.loadGame(state, defaultCards, "early");
+  },
+  loadGame(state, cardData, phase) {
+    for (let i = 0; i < cardData.length; i++) {
+      state.cards[i].location = cardData[i].location
     }
 
-    state.phase = "early"
+    state.phase = phase
   },
   moveCard(state, data) {
     data.card.location = data.destination
   },
   reshuffle(state) {
+    // TODO optionally move all deck cards to opponent hand
     state.cards.forEach((card) => card.location = card.location === "discard" ? "deck" : card.location);
   },
   addPhase(state, data) {
@@ -54,7 +59,8 @@ export const getters = {
 const store = new Vuex.Store({
   state: {
     cards: JSON.parse(JSON.stringify(TSCards)),
-    phase: "early"
+    phase: "early",
+    name: ""
   },
   mutations,
   getters,

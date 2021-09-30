@@ -7,8 +7,6 @@
       <b-col sm>
         <b-button-group class="my-1 mx-3">
           <b-button squared variant="primary" @click="newGame()">New Game</b-button>
-          <b-button squared variant="success">Save</b-button>
-          <b-button squared variant="warning">Load</b-button>
         </b-button-group>
         <b-button-group class="my-1 mx-3">
           <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
@@ -51,9 +49,33 @@ import TSCardHand from './components/TSCardHand.vue'
 import TSCard from './components/TSCard.vue'
 import { mapMutations, mapGetters } from 'vuex'
 
+
 export default {
   name: 'Twilight',
   data: function() {
+    const savedGame = localStorage.getItem('savedGame');
+
+    if (savedGame) {
+      this.$store.state.name = savedGame;
+      const savedGameData = JSON.parse(localStorage.getItem(savedGame))
+      this.$store.commit('loadGame', {cards: savedGameData["cards"], phase: savedGameData["phase"]})
+
+      console.log(`loading game ${savedGame}`)
+    } else {
+      this.$store.state.name = new Date().toISOString()
+      localStorage.setItem('lastGame', this.$store.state.name)
+
+      console.log(`loading game ${savedGame}`)
+    }
+
+    this.$store.watch((state) => {
+      const savedGameString = JSON.stringify(state)
+      localStorage.setItem(state.name, savedGameString)
+      localStorage.setItem('savedGame', state.name)
+
+      console.log(`autosaving ${state.name}`)
+    });
+
     return {
       cards: this.$store.state.cards,
       phase: this.$store.state.phase
