@@ -6,7 +6,7 @@
       </b-col>
       <b-col sm>
         <b-button-group class="my-1 mx-3">
-          <b-button squared variant="primary" @click="newGame()">New Game</b-button>
+          <b-button squared variant="primary" @click="newGame({optional: true})">New Game</b-button>
         </b-button-group>
         <b-button-group class="my-1 mx-3">
           <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
