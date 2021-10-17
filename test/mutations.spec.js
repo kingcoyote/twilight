@@ -6,17 +6,19 @@ const { newGame, loadGame, moveCard, reshuffle, addPhase } = mutations
 describe('twilight store', () => {
     it('creates new game with default cards', () => {
         const state = { }
-        newGame(state)
-        expect(state.hasOwnProperty("cards")).to.equal(true);
+        newGame(state, {name: "newgame"})
+        expect(state.hasOwnProperty("cards")).to.equal(true)
+        expect(state.hasOwnProperty("name")).to.equal(true)
         expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
         expect(getters.cardsInLocation(state)("inactive").length).to.equal(6)
+        expect(state.name).to.equal("newgame")
     })
     it('creates new game with optional cards (104-110)', () => {
         const state = { }
         newGame(state, { optional: true })
         expect(getters.cardsInLocation(state)("deck").length).to.equal(39)
     })
-    it("loads game from json string", () => {
+    it("loads game from saved data", () => {
         
     })
     it('moves cards between states', () => {

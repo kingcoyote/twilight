@@ -8,8 +8,10 @@ export const mutations = {
   newGame(state, data) {
     const defaultCards = JSON.parse(JSON.stringify(TSCards))
     
+    data = data || {}
+
     // if optional is true, turn disabled cards to inactive
-    if (data && (data.optional ?? false)) {
+    if (data.optional ?? false) {
       defaultCards
         .filter((card) => (card.flags || []).includes("optional"))
         .forEach((card) => card.location = "inactive")
@@ -24,15 +26,18 @@ export const mutations = {
       state.cards = defaultCards
     }
 
-    state.name = new Date().toISOString()
-    mutations.loadGame(state, defaultCards, "early");
-  },
-  loadGame(state, cardData, phase) {
-    for (let i = 0; i < cardData.length; i++) {
-      state.cards[i].location = cardData[i].location
-    }
+    data.name = data.name ?? new Date().toISOString()
 
-    state.phase = phase
+    mutations.loadGame(state, {cards: defaultCards, phase: "early", name: data.name});
+  },
+  loadGame(state, data) {
+    const cards = data.cards
+
+    for (let i = 0; i < cards.length; i++) {
+      state.cards[i].location = cards[i].location
+    }
+    state.name = data.name
+    state.phase = data.phase
   },
   moveCard(state, data) {
     data.card.location = data.destination
@@ -53,6 +58,15 @@ export const mutations = {
 export const getters = {
   cardsInLocation: (state) => (location) => {
     return state.cards.filter((card) => card.location === location)
+  },
+  name: (state) => {
+    return state.name;
+  },
+  phase: (state) => {
+    return state.phase;
+  },
+  cards: (state) => {
+    return state.cards;
   }
 }
 
@@ -70,6 +84,6 @@ const store = new Vuex.Store({
   }
 })
 
-mutations.newGame(store.state, { optional: false })
+store.commit('newGame', { optional: false })
 
 export default store;

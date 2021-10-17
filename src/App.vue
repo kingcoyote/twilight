@@ -10,8 +10,8 @@
         </b-button-group>
         <b-button-group class="my-1 mx-3">
           <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
-          <b-button squared v-if="phase === 'early'" variant="warning" @click="addPhase('mid')">Add Mid-War Cards</b-button>
-          <b-button squared v-if="phase === 'mid'" variant="warning" @click="addPhase('late')">Add Late-War Cards</b-button>
+          <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
+          <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
         </b-button-group>
       </b-col>
     </b-row>
@@ -56,30 +56,20 @@ export default {
     const savedGame = localStorage.getItem('savedGame');
 
     if (savedGame) {
-      this.$store.state.name = savedGame;
       const savedGameData = JSON.parse(localStorage.getItem(savedGame))
-      this.$store.commit('loadGame', {cards: savedGameData["cards"], phase: savedGameData["phase"]})
-
-      console.log(`loading game ${savedGame}`)
+      this.$store.commit('loadGame', {name: savedGame, cards: savedGameData["cards"], phase: savedGameData["phase"]})
     } else {
-      this.$store.state.name = new Date().toISOString()
-      localStorage.setItem('lastGame', this.$store.state.name)
-
-      console.log(`loading game ${savedGame}`)
+      this.$store.state.commit("newGame", {name: new Date().toISOString()})
+      localStorage.setItem('lastGame', this.$store.getters.name())
     }
 
     this.$store.watch((state) => {
       const savedGameString = JSON.stringify(state)
       localStorage.setItem(state.name, savedGameString)
       localStorage.setItem('savedGame', state.name)
-
-      console.log(`autosaving ${state.name}`)
     });
 
-    return {
-      cards: this.$store.state.cards,
-      phase: this.$store.state.phase
-    }
+    return { }
   },
   components: {
     TSCardHand,
@@ -87,9 +77,15 @@ export default {
   },
   methods: {
     ...mapMutations(['newGame', 'addPhase', 'reshuffle']),
+    addMidWar: function() {
+      this.$store.commit('addPhase', {phase: "mid"});
+    },
+    addLateWar: function() {
+      this.$store.commit('addPhase', {phase: "late"});
+    }
   },
   computed: {
-    ...mapGetters(['cardsInLocation']),
+    ...mapGetters(['cardsInLocation', 'phase']),
     usaCards: function() {
       return this.$store.getters.cardsInLocation("usa");
     },
