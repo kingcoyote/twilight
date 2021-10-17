@@ -7,6 +7,7 @@ describe('twilight store', () => {
     it('creates new game with default cards', () => {
         const state = { }
         newGame(state, {name: "newgame"})
+
         expect(state.hasOwnProperty("cards")).to.equal(true)
         expect(state.hasOwnProperty("name")).to.equal(true)
         expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
@@ -63,7 +64,7 @@ describe('twilight store', () => {
 
         addPhase(state, { phase: "mid" })
         expect(state.phase).to.equal("mid")
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(39)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(82)
     })
     it("gets cards with state", () => {
         const state = { }
