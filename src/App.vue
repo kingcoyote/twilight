@@ -61,7 +61,7 @@ export default {
       const savedGameData = JSON.parse(localStorage.getItem(savedGame))
       this.$store.commit('loadGame', {name: savedGame, cards: savedGameData["cards"], phase: savedGameData["phase"]})
     } else {
-      this.$store.state.commit("newGame", {name: new Date().toISOString()})
+      this.$store.commit("newGame", {name: new Date().toISOString()})
       localStorage.setItem('lastGame', this.$store.getters.name())
     }
 
