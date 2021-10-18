@@ -10,14 +10,17 @@ describe('twilight store', () => {
 
         expect(state.hasOwnProperty("cards")).to.equal(true)
         expect(state.hasOwnProperty("name")).to.equal(true)
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
-        expect(getters.cardsInLocation(state)("inactive").length).to.equal(6)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(35)
+        expect(getters.cardsInLocation(state)("inactive").length).to.equal(67)
+        // The China Card always starts with USSR
+        expect(getters.cardsInLocation(state)("ussr").length).to.equal(1)
         expect(state.name).to.equal("newgame")
     })
     it('creates new game with optional cards (104-110)', () => {
         const state = { }
         newGame(state, { optional: true })
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(39)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(38)
+        expect(getters.cardsInLocation(state)("ussr").length).to.equal(1)
     })
     it("loads game from saved data", () => {
         
@@ -60,22 +63,22 @@ describe('twilight store', () => {
         const state = { }
         newGame(state)
         expect(state.phase).to.equal("early")
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(35)
 
         addPhase(state, { phase: "mid" })
         expect(state.phase).to.equal("mid")
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(82)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(83)
     })
     it("gets cards with state", () => {
         const state = { }
         newGame(state)
 
         let cardsInLocation = getters.cardsInLocation(state)
-        expect(cardsInLocation("deck").length).to.equal(36)
+        expect(cardsInLocation("deck").length).to.equal(35)
 
         moveCard(state, { card: state.cards[0], destination: "ussr" })
-        expect(cardsInLocation("ussr").length).to.equal(1)
-        expect(cardsInLocation("deck").length).to.equal(35)
+        expect(cardsInLocation("ussr").length).to.equal(2)
+        expect(cardsInLocation("deck").length).to.equal(34)
         expect(cardsInLocation("usa").length).to.equal(0)
     })
     it("resets game correctly", () => {
@@ -89,6 +92,7 @@ describe('twilight store', () => {
         moveCard(state, { card: state.cards[4], destination: "discard" })
 
         newGame(state)
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(36)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(35)
+        expect(getters.cardsInLocation(state)("ussr").length).to.equal(1)
     })
 })

@@ -20,7 +20,10 @@ export const mutations = {
     // set all early inactive cards to deck
     defaultCards
       .filter((card) => card.phase === "early" && card.location !== "disabled")
-      .forEach((card) => card.location = "deck")
+      .forEach((card) => card.location = "deck");
+    
+    // except The China Card, which always starts with USSR
+    defaultCards[5].location = "ussr";
 
     if (state.cards === undefined) {
       state.cards = defaultCards

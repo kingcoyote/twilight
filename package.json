@@ -2,7 +2,7 @@
   "name": "twilight",
   "version": "0.1.0",
   "private": true,
-  "type":"module",
+  "type": "module",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,6 +10,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.6.0",
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",

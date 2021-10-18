@@ -1,9 +1,8 @@
 <template>
   <b-container>
-    <b-card-group deck v-for="row in rows"
-      :key=row.id
+    <b-card-group deck
       :class="['ts-card-collection', 'ts-hand']"> 
-      <TSCard v-for="card in row.cards" :key=card.number :card=card display="full"/> 
+      <TSCard v-for="card in cards" :key=card.number :card=card display="full"/> 
     </b-card-group>
   </b-container>
 </template>
@@ -20,14 +19,6 @@ export default {
     cards: Array
   },
   computed: {
-    rows: function() {
-      let rows = []
-      const cols = 4
-      for (let i = 0; i < this.cards.length / cols; i++) {
-        rows.push({id: i, cards:this.cards.slice(i*cols, i*cols+cols)})
-      }
-      return rows;
-    }
   }
 }
 </script>

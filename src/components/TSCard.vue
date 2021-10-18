@@ -17,14 +17,25 @@
           Sorry, your browser does not support inline SVG.
         </svg>
         <span>{{ card.name }}<span class="remove" v-if="card.flags && card.flags.includes('remove')">*</span></span>
-        <b-dropdown size="sm" class="card-opts float-right">
-          <b-dropdown-item @click="moveCard({card, destination:'usa'})">To USA</b-dropdown-item>
-          <b-dropdown-item @click="moveCard({card, destination:'ussr'})">To USSR</b-dropdown-item>
+        <b-button-toolbar class="card-opts toolbar float-right d-none d-lg-block">
+          <b-button-group>
+            <b-button v-if="card.location !== 'usa'" @click="moveCard({card, destination:'usa'})" class="to-usa"><i class="bi-arrow-left-short"></i></b-button>
+            <b-button v-if="card.location !== 'ussr'" @click="moveCard({card, destination:'ussr'})" class="to-ussr"><i class="bi-arrow-right-short"></i></b-button>
+          </b-button-group>
+          <b-button-group>
+            <b-button v-if="card.location !== 'deck'" @click="moveCard({card, destination:'deck'})" class="to-deck" variant="success"><i class="bi-arrow-repeat to-deck"></i></b-button>
+            <b-button v-if="card.location !== 'discard'" @click="moveCard({card, destination:'discard'})" class="to-discard"><i class="bi-arrow-down-short to-discard"></i></b-button>
+            <b-button v-if="card.location !== 'removed'" @click="moveCard({card, destination:'removed'})" class="to-removed"><i class="bi-trash to-removed"></i></b-button>
+          </b-button-group>
+        </b-button-toolbar>
+        <b-dropdown right size="sm" class="card-opts dropdown float-right d-block d-lg-none">
+          <b-dropdown-item @click="moveCard({card, destination:'usa'})"><i class="bi-arrow-left-short to-usa"></i> To USA</b-dropdown-item>
+          <b-dropdown-item @click="moveCard({card, destination:'ussr'})"><i class="bi-arrow-right-short to-ussr"></i> To USSR</b-dropdown-item>
           <b-dropdown-divider />
-          <b-dropdown-item @click="moveCard({card, destination:'deck'})">Deck</b-dropdown-item>
+          <b-dropdown-item @click="moveCard({card, destination:'deck'})"><i class="bi-arrow-repeat to-deck"></i> Deck</b-dropdown-item>
           <b-dropdown-divider />
-          <b-dropdown-item @click="moveCard({card, destination:'discard'})">Discard</b-dropdown-item>
-          <b-dropdown-item @click="moveCard({card, destination:'removed'})">Remove</b-dropdown-item>
+          <b-dropdown-item @click="moveCard({card, destination:'discard'})"><i class="bi-arrow-down-short to-discard"></i> Discard</b-dropdown-item>
+          <b-dropdown-item @click="moveCard({card, destination:'removed'})"><i class="bi-trash to-removed"></i> Remove</b-dropdown-item>
         </b-dropdown>
       </div>
       <div v-if="myDisplay === 'full'">
@@ -63,14 +74,20 @@ export default {
 </script>
 
 <style>
-  div.ts-card { border: none; border-radius: 0; }
+  div.ts-card { border: none; border-radius: 0; background-color:#eee; }
 
   div.ts-stack div.ts-card { width:100%; }
-  @media screen and (max-width:748px) {
-    div.ts-hand div.ts-card { width:100%; }
+  @media(max-width:767.8px) {
+    div.ts-hand div.ts-card { min-width:100%; max-width:100%; width:100%; }
   }
-  @media screen and (min-width:748px) {
-    div.ts-hand div.ts-card { max-width:calc(25% - 8px); background-color: #eee; }
+  @media(min-width:768px) {
+    div.ts-hand div.ts-card { min-width:calc(50% - 8px); max-width:calc(50% - 8px); }
+  }
+  @media(min-width:992px) {
+    div.ts-hand div.ts-card { min-width:calc(33% - 8px); max-width:calc(33% - 8px); }
+  }
+  @media(min-width:1200px) {
+    div.ts-hand div.ts-card { min-width:calc(25% - 8px); max-width:calc(25% - 8px); }
   }
   div.ts-card div.card-body { padding:0; }
   div.ts-card svg { display:inline-block; margin-top:-10px; margin-bottom:-10px; }
@@ -92,5 +109,24 @@ export default {
 
   div.ts-card div.remove { font-style:italic; font-weight:bold; color:#cc3333; text-align:center; }
 
-  div.dropdown.card-opts button { padding:0 5px; margin:2px 0; }
+  div.card-opts { margin:2px 0; }
+  div.card-opts div.btn-group { margin:0 2px; }
+  div.card-opts button { padding:2px 4px; font-size:0.8em; }
+  div.dropdown.card-opts button { padding:0 5px; }
+
+  div.card-opts button.btn { border: none; }
+  div.card-opts button.btn.to-usa { background-color:blue; color:white; }
+  div.card-opts button.btn.to-ussr { background-color:red; color:yellow; }
+  div.card-opts button.btn.to-deck { background-color: white; color:black; }
+  div.card-opts button.btn.to-discard { background-color: white; color: black; }
+  div.card-opts button.btn.to-removed { background-color: white; color: black; }
+
+  @media screen and (min-width: 992px) { 
+    div.card-opts.dropdown { display: hidden; } 
+    div.card-opts.toolbar { display: inherit; } 
+  }
+  @media screen and (max-width: 991.8px) { 
+    div.card-opts.dropdown { display: inherit;} 
+    div.card-opts.toolbar { display:hidden; } 
+  }
 </style>

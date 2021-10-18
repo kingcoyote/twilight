@@ -1,18 +1,20 @@
 <template>
-  <b-container>
+  <b-container id="twilight">
     <b-row>
       <b-col sm>
         <h1>TS Track</h1>
       </b-col>
       <b-col sm>
-        <b-button-group class="my-1 mx-3">
-          <b-button squared variant="primary" @click="newGame({optional: true})">New Game</b-button>
-        </b-button-group>
-        <b-button-group class="my-1 mx-3">
-          <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
-          <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
-          <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
-        </b-button-group>
+        <div class="float-right">
+          <b-button-group class="my-1 mx-3">
+            <b-button squared variant="primary" @click="newGame({optional: true})">New Game</b-button>
+          </b-button-group>
+          <b-button-group class="my-1 mx-3">
+            <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
+            <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
+            <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
+          </b-button-group>
+        </div>
       </b-col>
     </b-row>
     <b-row id="usa" class="mb-3">
@@ -28,15 +30,15 @@
       </b-col>
     </b-row>
     <b-row id="stacks" class="mb-3">
-      <b-col sm id="deck" class="ts-stack">
+      <b-col id="deck" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Deck ({{ deckCards.length }})</h3>
         <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
       </b-col>
-      <b-col sm id="discard" class="ts-stack">
+      <b-col id="discard" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Discard ({{ discardCards.length }})</h3>
         <TSCard v-for='card in discardCards' :key=card.number :card=card display="min"/> 
       </b-col>
-      <b-col sm id="removed" class="ts-stack">
+      <b-col id="removed" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Removed ({{ removedCards.length }})</h3>
         <TSCard v-for='card in removedCards' :key=card.number :card=card display="min"/> 
       </b-col>
