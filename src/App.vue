@@ -32,6 +32,20 @@
     <b-row id="stacks" class="mb-3">
       <b-col id="deck" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Deck ({{ deckCards.length }})</h3>
+        <b-button-toolbar>
+          <b-button-group class="mx-auto">
+            <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
+            <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
+          </b-button-group>
+          <b-button-group class="mx-auto">
+            <b-button :variant="isSort('alpha', 'asc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'asc')"><i class="bi-sort-alpha-down"></i></b-button>
+            <b-button :variant="isSort('alpha', 'desc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'desc')"><i class="bi-sort-alpha-up"></i></b-button>
+          </b-button-group>
+          <b-button-group class="mx-auto">
+            <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
+            <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
+          </b-button-group>
+        </b-button-toolbar>
         <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
       </b-col>
       <b-col id="discard" class="ts-stack col-12 col-md-6 col-lg-4">
@@ -71,7 +85,10 @@ export default {
       localStorage.setItem('savedGame', state.name)
     });
 
-    return { }
+    return { 
+      sort: "number",
+      order: "asc"
+    }
   },
   components: {
     TSCardHand,
@@ -84,10 +101,18 @@ export default {
     },
     addLateWar: function() {
       this.$store.commit('addPhase', {phase: "late"});
-    }
+    },
+    setSort: function(sort, order) {
+      this.sort = sort;
+      this.order = order;
+    },
+    isSort: function(sort, order) {
+      return this.sort === sort && this.order === order;
+    },
   },
   computed: {
     ...mapGetters(['cardsInLocation', 'phase']),
+    
     usaCards: function() {
       return this.$store.getters.cardsInLocation("usa");
     },
@@ -95,7 +120,23 @@ export default {
       return this.$store.getters.cardsInLocation("ussr");
     },
     deckCards: function() {
-      return this.$store.getters.cardsInLocation("deck");
+      let cards = this.$store.getters.cardsInLocation("deck");
+
+      cards.sort((a, b) => {
+        if (this.sort === "number") {
+          return a.number - b.number;
+        } else if (this.sort === "alpha") {
+          return a.name.localeCompare(b.name);
+        } else if (this.sort === "ops") {
+          return b.ops - a.ops;
+        }
+      })
+
+      if (this.order === "desc") {
+        cards.reverse();
+      }
+
+      return cards;
     },
     discardCards: function() {
       return this.$store.getters.cardsInLocation("discard");
