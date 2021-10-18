@@ -19,13 +19,13 @@
         <span>{{ card.name }}<span class="remove" v-if="card.flags && card.flags.includes('remove')">*</span></span>
         <b-button-toolbar class="card-opts toolbar float-right d-none d-lg-block">
           <b-button-group>
-            <b-button v-if="card.location !== 'usa'" @click="moveCard({card, destination:'usa'})" class="to-usa"><i class="bi-arrow-left-short"></i></b-button>
-            <b-button v-if="card.location !== 'ussr'" @click="moveCard({card, destination:'ussr'})" class="to-ussr"><i class="bi-arrow-right-short"></i></b-button>
-          </b-button-group>
-          <b-button-group>
             <b-button v-if="card.location !== 'deck'" @click="moveCard({card, destination:'deck'})" class="to-deck" variant="success"><i class="bi-arrow-repeat to-deck"></i></b-button>
             <b-button v-if="card.location !== 'discard'" @click="moveCard({card, destination:'discard'})" class="to-discard"><i class="bi-arrow-down-short to-discard"></i></b-button>
-            <b-button v-if="card.location !== 'removed'" @click="moveCard({card, destination:'removed'})" class="to-removed"><i class="bi-trash to-removed"></i></b-button>
+            <b-button v-if="card.flags && card.flags.includes('remove') && card.location !== 'removed'" @click="moveCard({card, destination:'removed'})" class="to-removed"><i class="bi-trash to-removed"></i></b-button>
+          </b-button-group>
+          <b-button-group>
+            <b-button v-if="card.location !== 'usa'" @click="moveCard({card, destination:'usa'})" class="to-usa"><i class="bi-arrow-left-short"></i></b-button>
+            <b-button v-if="card.location !== 'ussr'" @click="moveCard({card, destination:'ussr'})" class="to-ussr"><i class="bi-arrow-right-short"></i></b-button>
           </b-button-group>
         </b-button-toolbar>
         <b-dropdown right size="sm" class="card-opts dropdown float-right d-block d-lg-none">
@@ -35,7 +35,7 @@
           <b-dropdown-item @click="moveCard({card, destination:'deck'})"><i class="bi-arrow-repeat to-deck"></i> Deck</b-dropdown-item>
           <b-dropdown-divider />
           <b-dropdown-item @click="moveCard({card, destination:'discard'})"><i class="bi-arrow-down-short to-discard"></i> Discard</b-dropdown-item>
-          <b-dropdown-item @click="moveCard({card, destination:'removed'})"><i class="bi-trash to-removed"></i> Remove</b-dropdown-item>
+          <b-dropdown-item v-if="card.flags && card.flags.includes('remove')" @click="moveCard({card, destination:'removed'})"><i class="bi-trash to-removed"></i> Remove</b-dropdown-item>
         </b-dropdown>
       </div>
       <div v-if="myDisplay === 'full'">

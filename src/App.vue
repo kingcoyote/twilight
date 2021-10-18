@@ -14,6 +14,20 @@
             <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
             <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
           </b-button-group>
+          <b-button-toolbar>
+            <b-button-group class="mx-auto">
+              <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
+              <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
+            </b-button-group>
+            <b-button-group class="mx-auto">
+              <b-button :variant="isSort('alpha', 'asc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'asc')"><i class="bi-sort-alpha-down"></i></b-button>
+              <b-button :variant="isSort('alpha', 'desc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'desc')"><i class="bi-sort-alpha-up"></i></b-button>
+            </b-button-group>
+            <b-button-group class="mx-auto">
+              <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
+              <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
+            </b-button-group>
+          </b-button-toolbar>
         </div>
       </b-col>
     </b-row>
@@ -32,20 +46,6 @@
     <b-row id="stacks" class="mb-3">
       <b-col id="deck" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Deck ({{ deckCards.length }})</h3>
-        <b-button-toolbar>
-          <b-button-group class="mx-auto">
-            <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
-            <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
-          </b-button-group>
-          <b-button-group class="mx-auto">
-            <b-button :variant="isSort('alpha', 'asc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'asc')"><i class="bi-sort-alpha-down"></i></b-button>
-            <b-button :variant="isSort('alpha', 'desc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'desc')"><i class="bi-sort-alpha-up"></i></b-button>
-          </b-button-group>
-          <b-button-group class="mx-auto">
-            <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
-            <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
-          </b-button-group>
-        </b-button-toolbar>
         <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
       </b-col>
       <b-col id="discard" class="ts-stack col-12 col-md-6 col-lg-4">
@@ -65,6 +65,27 @@ import TSCardHand from './components/TSCardHand.vue'
 import TSCard from './components/TSCard.vue'
 import { mapMutations, mapGetters } from 'vuex'
 
+function sortCards(cards, sort, order) {
+  const filterName = function(name) {
+    return name.toLowerCase().replace("the", "").replace("“", "").replace("”", "").trim();
+  }
+
+  cards.sort((a, b) => {
+    if (sort === "number") {
+      return a.number - b.number;
+    } else if (sort === "alpha") {
+      return filterName(a.name).localeCompare(filterName(b.name));
+    } else if (sort === "ops") {
+      return b.ops - a.ops;
+    }
+  })
+
+  if (order === "desc") {
+    cards.reverse();
+  }
+
+  return cards;
+}
 
 export default {
   name: 'Twilight',
@@ -120,29 +141,13 @@ export default {
       return this.$store.getters.cardsInLocation("ussr");
     },
     deckCards: function() {
-      let cards = this.$store.getters.cardsInLocation("deck");
-
-      cards.sort((a, b) => {
-        if (this.sort === "number") {
-          return a.number - b.number;
-        } else if (this.sort === "alpha") {
-          return a.name.localeCompare(b.name);
-        } else if (this.sort === "ops") {
-          return b.ops - a.ops;
-        }
-      })
-
-      if (this.order === "desc") {
-        cards.reverse();
-      }
-
-      return cards;
+      return sortCards(this.$store.getters.cardsInLocation("deck"), this.sort, this.order);
     },
     discardCards: function() {
-      return this.$store.getters.cardsInLocation("discard");
+      return sortCards(this.$store.getters.cardsInLocation("discard"), this.sort, this.order);
     },
     removedCards: function() {
-      return this.$store.getters.cardsInLocation("removed");
+      return sortCards(this.$store.getters.cardsInLocation("removed"), this.sort, this.order);
     },
     savedGames: function() {
       return JSON.parse(localStorage.getItem('savedGames')) || [];
