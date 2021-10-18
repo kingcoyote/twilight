@@ -62,7 +62,7 @@ export default {
       this.$store.commit('loadGame', {name: savedGame, cards: savedGameData["cards"], phase: savedGameData["phase"]})
     } else {
       this.$store.commit("newGame", {name: new Date().toISOString()})
-      localStorage.setItem('lastGame', this.$store.getters.name())
+      localStorage.setItem('lastGame', this.$store.getters.name)
     }
 
     this.$store.watch((state) => {
