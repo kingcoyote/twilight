@@ -14,20 +14,6 @@
             <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
             <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
           </b-button-group>
-          <b-button-toolbar>
-            <b-button-group class="mx-auto">
-              <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
-              <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
-            </b-button-group>
-            <b-button-group class="mx-auto">
-              <b-button :variant="isSort('alpha', 'asc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'asc')"><i class="bi-sort-alpha-down"></i></b-button>
-              <b-button :variant="isSort('alpha', 'desc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'desc')"><i class="bi-sort-alpha-up"></i></b-button>
-            </b-button-group>
-            <b-button-group class="mx-auto">
-              <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
-              <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
-            </b-button-group>
-          </b-button-toolbar>
         </div>
       </b-col>
     </b-row>
@@ -42,6 +28,22 @@
         <h3>USSR ({{ ussrCards.length }})</h3>
         <TSCardHand :cards=ussrCards cols=4 />
       </b-col>
+    </b-row>
+    <b-row>
+      <b-button-toolbar class="mx-auto">
+        <b-button-group class="mx-2">
+          <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
+          <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
+        </b-button-group>
+        <b-button-group class="mx-2">
+          <b-button :variant="isSort('alpha', 'asc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'asc')"><i class="bi-sort-alpha-down"></i></b-button>
+          <b-button :variant="isSort('alpha', 'desc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'desc')"><i class="bi-sort-alpha-up"></i></b-button>
+        </b-button-group>
+        <b-button-group class="mx-2">
+          <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
+          <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
+        </b-button-group>
+      </b-button-toolbar>
     </b-row>
     <b-row id="stacks" class="mb-3">
       <b-col id="deck" class="ts-stack col-12 col-md-6 col-lg-4">

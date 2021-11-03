@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <b-card-group deck
+    <b-card-group
       :class="['ts-card-collection', 'ts-hand']"> 
       <TSCard v-for="card in cards" :key=card.number :card=card display="full"/> 
     </b-card-group>
