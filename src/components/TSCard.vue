@@ -103,7 +103,7 @@ export default {
   /* set the title bg for each phase */
   div.title { display:inline-block; margin-top:5px; margin-bottom:5px; border:1px solid black; padding-right:5px; width:calc(100% - 10px)}
   div.ts-card div.title { color: white; max-width:100% }
-  div.ts-card div.title .name { display:inline; line-height:1rem; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:75%;}
+  div.ts-card div.title .name { display:inline-flex; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:75%;}
   div.ts-card.early div.title { background-color:rgb(0, 171, 202); }
   div.ts-card.mid div.title { background-color:rgb(0,119,139); }
   div.ts-card.late div.title { background-color:rgb(0,79,92); }
