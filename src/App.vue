@@ -7,13 +7,31 @@
       <b-col sm>
         <div class="float-right">
           <b-button-group class="my-1 mx-3">
-            <b-button squared variant="primary" @click="newGame({optional: true})">New Game</b-button>
+            <b-button squared variant="primary" v-b-modal.modal-new-game>New Game</b-button>
           </b-button-group>
           <b-button-group class="my-1 mx-3">
             <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
             <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
             <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
           </b-button-group>
+          <b-modal id="modal-new-game" title="New Game">
+            <b-form-group id="input-game-name" label-for="input-game-name">
+              <b-form-input id="input-game-name" v-model=newGameForm.name placeholder="Enter game name" required></b-form-input>
+            </b-form-group>
+            <b-form-group id="input-game-optcards" label-for="input-game-optcards" class="float-right">
+              <b-form-checkbox-group v-model=newGameForm.opts>
+                <b-form-checkbox value="optcards" checked>Use Optional Cards</b-form-checkbox>
+              </b-form-checkbox-group>
+            </b-form-group>
+            <template #modal-footer>
+              <div class="w-100">
+                <b-button-group class="float-right">
+                  <b-button variant="danger" size="sm" @click="$bvModal.hide('modal-new-game')">Cancel</b-button>
+                  <b-button variant="primary" size="sm" @click="newGame({name: newGameForm.name, optional: newGameForm.opts.includes('optcards')}); $bvModal.hide('modal-new-game')">Start</b-button>
+                </b-button-group>
+              </div>
+            </template>
+          </b-modal>
         </div>
       </b-col>
     </b-row>
@@ -110,7 +128,11 @@ export default {
 
     return { 
       sort: "number",
-      order: "asc"
+      order: "asc",
+      newGameForm: {
+        name: "new game",
+        opts: []
+      }
     }
   },
   components: {
