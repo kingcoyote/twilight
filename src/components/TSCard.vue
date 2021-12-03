@@ -53,7 +53,7 @@
       <b-button-toolbar class="card-opts toolbar text-center">
         <b-button-group>
           <b-button v-if="card.location !== 'deck' && card.number != 6" @click="moveCard({card, destination:'deck'})" class="to-deck" variant="success"><i class="bi-arrow-repeat to-deck"></i></b-button>
-          <b-button v-if="card.location !== 'discard' && card.number != 6" @click="moveCard({card, destination:'discard'})" class="to-discard"><i class="bi-arrow-down-short to-discard"></i></b-button>
+          <b-button v-if="card.location !== 'discard' && card.number != 6 && card.number != 38" @click="moveCard({card, destination:'discard'})" class="to-discard"><i class="bi-arrow-down-short to-discard"></i></b-button>
           <b-button v-if="card.flags && card.flags.includes('remove') && card.location !== 'removed'" @click="moveCard({card, destination:'removed'})" class="to-removed"><i class="bi-trash to-removed"></i></b-button>
         </b-button-group>
         <b-button-group>
