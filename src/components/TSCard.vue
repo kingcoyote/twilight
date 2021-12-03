@@ -1,5 +1,5 @@
 <template>
-  <b-card sm: :class="['ts-card', 'float-left', 'm-1', card.phase, card.side]">
+  <b-card sm: :class="['ts-card', 'float-left', 'm-1', card.phase, card.side, card.short]">
     <div class="title mx-1 mt-1 mb-0" @click="myDisplay = myDisplay === 'full' && !['usa', 'ussr'].includes(card.location) ? 'min' : 'full' ">
       <svg height="46" width="46" class="star">
         <defs>
@@ -15,7 +15,9 @@
         <text v-if="card.ops > 0" style="font:Arial;font-size:32px;font-weight:bold;stroke-width:1px;" transform="translate(10,34)">{{ card.ops }}</text>
         Sorry, your browser does not support inline SVG.
       </svg>
-      <span class="name">{{ card.name }}</span><span class="remove" v-if="card.flags && card.flags.includes('remove')">*</span>
+      <span v-if="!(card.flags && card.flags.includes('scoring')) || myDisplay !== 'full'">
+        <span class="name">{{ card.name }}</span><span class="remove" v-if="card.flags && card.flags.includes('remove')">*</span>
+      </span>
       <b-dropdown v-if="myDisplay !== 'full'" right size="sm" class="card-opts dropdown float-right d-block">
         <b-dropdown-item @click="moveCard({card, destination:'usa'})"><i class="bi-arrow-left-short to-usa"></i> To USA</b-dropdown-item>
         <b-dropdown-item @click="moveCard({card, destination:'ussr'})"><i class="bi-arrow-right-short to-ussr"></i> To USSR</b-dropdown-item>
@@ -27,8 +29,25 @@
       </b-dropdown>
     </div>
     <div v-if="myDisplay === 'full'">
-      <div class="text p-2 pt-1 text-center" >{{ cardDescription }}</div>
-      <div class="remove p-2" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
+      <div class="p-2" v-if="card.flags && card.flags.includes('scoring')">
+        <table class="table table-striped scoring">
+          <thead>
+            <tr><th>
+              <span class="name">{{ card.name }}</span>
+              <span>Both sides score:</span>
+            </th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="score in card.scoring" :key=score>
+              <td>{{ score }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>
+        <div class="text p-2 pt-1 text-center" >{{ cardDescription }}</div>
+        <div class="remove p-2" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
+      </div>
     </div>
     <template #footer v-if="myDisplay === 'full'" class="p-0">
       <b-button-toolbar class="card-opts toolbar text-center">
@@ -94,7 +113,7 @@ export default {
 
   /* set the star and text colors for each side */
   div.ts-card.ussr svg.star { fill:red; stroke:yellow; }
-  div.ts-card.ussr text { fill:white; stroke:black; }
+  div.ts-card.ussr text { fill:white; stroke:rgb(175, 173, 173); }
   div.ts-card.usa svg.star { fill: white; stroke: blue; }
   div.ts-card.usa text { fill:black; stroke:white; }
   div.ts-card.neutral svg.star { fill:url(#neutralStripe);stroke:black; }
@@ -123,6 +142,27 @@ export default {
   div.card-opts button.btn.to-deck { background-color: white; color:black; }
   div.card-opts button.btn.to-discard { background-color: white; color: black; }
   div.card-opts button.btn.to-removed { background-color: white; color: black; }
+
+  div.card table.scoring { text-align:center; border:1px solid black; }
+  div.card table td, div.card table th { padding:3px; border:none; }
+  div.card table.scoring th { border:1px solid black; }
+  div.card table.scoring th span { font-weight:normal; display:block; }
+  div.card table.scoring th span.name { font-weight:bold; font-size:1.25em; }
+  div.card table.scoring td { background-color: white; }
+  div.card.assc th { background-color:#f4ad43; }
+  div.card.assc tr:nth-child(even) td { background-color:#face8d; }
+  div.card.eusc th { background-color:#a796ca; }
+  div.card.eusc tr:nth-child(even) td { background-color:#c7c8e4; }
+  div.card.mesc th { background-color:#c7eafd; }
+  div.card.mesc tr:nth-child(even) td { background-color:#c7eafd; }
+  div.card.casc th { background-color:#d9e3a4; }
+  div.card.casc tr:nth-child(even) td { background-color:#d9e3a4; }
+  div.card.seasc th { background-color:#f2a41c; }
+  div.card.seasc tr:nth-child(even) td { background-color:#ffd504; }
+  div.card.afsc th { background-color:#ffec95; }
+  div.card.afsc tr:nth-child(even) td { background-color:#ffec95; }
+  div.card.sasc th { background-color:#a0c987; }
+  div.card.sasc tr:nth-child(even) td { background-color:#a0c987; }
 
   @media screen and (min-width: 992px) { 
     div.card-opts.dropdown { display: hidden; } 
