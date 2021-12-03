@@ -43,6 +43,8 @@
             </tr>
           </tbody>
         </table>
+        <div class="remove p-2" v-if="card.flags && card.flags.includes('remove')">Remove from play after scoring.</div>
+        <div class="not-held">MAY NOT BE HELD</div>
       </div>
       <div v-else>
         <div class="text p-2 pt-1 text-center" >{{ cardDescription }}</div>
@@ -127,7 +129,7 @@ export default {
   div.ts-card.mid div.title { background-color:rgb(0,119,139); }
   div.ts-card.late div.title { background-color:rgb(0,79,92); }
 
-  div.ts-card div.remove { font-style:italic; font-weight:bold; color:#cc3333; text-align:center; }
+  div.ts-card div.remove { font-style:italic; font-weight:bold; color:#cc3333; text-align:center; font-size:0.8em; }
 
   div.ts-card div.card-footer { padding:0; }
 
@@ -163,6 +165,8 @@ export default {
   div.card.afsc tr:nth-child(even) td { background-color:#ffec95; }
   div.card.sasc th { background-color:#a0c987; }
   div.card.sasc tr:nth-child(even) td { background-color:#a0c987; }
+
+  div.card div.not-held { border:1px solid black; background-color:red; color: yellow; text-align:center; font-weight: bold; }
 
   @media screen and (min-width: 992px) { 
     div.card-opts.dropdown { display: hidden; } 
