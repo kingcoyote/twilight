@@ -1,5 +1,5 @@
 <template>
-  <b-card sm: :class="['ts-card', 'float-left', 'm-1', card.phase, card.side, card.short, card.location]">
+  <b-card sm: :class="['ts-card', 'float-left', 'm-1', 'phase-' + card.phase, 'side-' + card.side, card.short, 'loc-' + card.location]">
     <div class="title mx-1 mt-1 mb-0" @click="myDisplay = myDisplay === 'full' && !['usa', 'ussr'].includes(card.location) ? 'min' : 'full' ">
       <svg height="46" width="46" class="star">
         <defs>
@@ -96,7 +96,7 @@ export default {
 
 <style>
   div.ts-card { border: none; border-radius: 0; background-color:#eee; }
-  div.ts-card.inactive div.title span { text-decoration:line-through; }
+  div.ts-card.loc-inactive div.title span { text-decoration:line-through; }
 
   div.ts-stack div.ts-card { width:100%; }
   @media(max-width:767.8px) {
@@ -115,20 +115,20 @@ export default {
   div.ts-card svg { display:inline-block; margin-top:-10px; margin-bottom:-10px; }
 
   /* set the star and text colors for each side */
-  div.ts-card.ussr svg.star { fill:red; stroke:yellow; }
-  div.ts-card.ussr text { fill:white; stroke:rgb(175, 173, 173); }
-  div.ts-card.usa svg.star { fill: white; stroke: blue; }
-  div.ts-card.usa text { fill:black; stroke:white; }
-  div.ts-card.neutral svg.star { fill:url(#neutralStripe);stroke:black; }
-  div.ts-card.neutral text { fill:black; stroke:white; }
+  div.ts-card.side-ussr svg.star { fill:red; stroke:yellow; }
+  div.ts-card.side-ussr text { fill:white; stroke:rgb(175, 173, 173); }
+  div.ts-card.side-usa svg.star { fill: white; stroke: blue; }
+  div.ts-card.side-usa text { fill:black; stroke:white; }
+  div.ts-card.side-neutral svg.star { fill:url(#neutralStripe);stroke:black; }
+  div.ts-card.side-neutral text { fill:black; stroke:white; }
 
   /* set the title bg for each phase */
   div.title { display:inline-block; margin-top:5px; margin-bottom:5px; border:1px solid black; padding-right:5px; width:calc(100% - 10px)}
   div.ts-card div.title { color: white; max-width:100% }
   div.ts-card div.title .name { display:inline-flex; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:75%;}
-  div.ts-card.early div.title { background-color:rgb(0, 171, 202); }
-  div.ts-card.mid div.title { background-color:rgb(0,119,139); }
-  div.ts-card.late div.title { background-color:rgb(0,79,92); }
+  div.ts-card.phase-early div.title { background-color:rgb(0, 171, 202); }
+  div.ts-card.phase-mid div.title { background-color:rgb(0,119,139); }
+  div.ts-card.phase-late div.title { background-color:rgb(0,79,92); }
 
   div.ts-card div.remove { font-style:italic; font-weight:bold; color:#cc3333; text-align:center; font-size:0.8em; }
 
