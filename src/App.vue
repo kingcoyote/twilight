@@ -61,12 +61,18 @@
           <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
           <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
         </b-button-group>
+        <b-button class="mx-2" :variant="group == 'region' ? 'primary' : 'secondary'" @click="setGroup('region')">Region</b-button>
       </b-button-toolbar>
     </b-row>
     <b-row id="stacks" class="mb-3">
       <b-col id="deck" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Deck ({{ deckCards.length }})</h3>
-        <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
+        <div v-if="group === 'region'">
+          <TSCardDeckRegions :cards=deckCards />
+        </div>
+        <div v-else>
+          <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
+        </div>
       </b-col>
       <b-col id="discard" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Discard ({{ discardCards.length }})</h3>
@@ -81,6 +87,7 @@
 </template>
 
 <script>
+import TSCardDeckRegions from './components/TSCardDeckRegions.vue'
 import TSCardHand from './components/TSCardHand.vue'
 import TSCard from './components/TSCard.vue'
 import { mapMutations, mapGetters } from 'vuex'
@@ -132,12 +139,14 @@ export default {
       newGameForm: {
         name: "new game",
         opts: []
-      }
+      },
+      group: ""
     }
   },
   components: {
     TSCardHand,
-    TSCard
+    TSCard,
+    TSCardDeckRegions
   },
   methods: {
     ...mapMutations(['newGame', 'addPhase', 'reshuffle']),
@@ -150,6 +159,14 @@ export default {
     setSort: function(sort, order) {
       this.sort = sort;
       this.order = order;
+    },
+    setGroup: function(group) {
+      if (this.group === group) {
+        this.group = ""
+        return;
+      }
+
+      this.group = group;
     },
     isSort: function(sort, order) {
       return this.sort === sort && this.order === order;
