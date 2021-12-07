@@ -62,13 +62,17 @@
           <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
         </b-button-group>
         <b-button class="mx-2" :variant="group == 'region' ? 'primary' : 'secondary'" @click="setGroup('region')">Region</b-button>
+        <b-button class="mx-2" :variant="group == 'effect' ? 'primary' : 'secondary'" @click="setGroup('effect')">Effect</b-button>
       </b-button-toolbar>
     </b-row>
     <b-row id="stacks" class="mb-3">
       <b-col id="deck" class="ts-stack col-12 col-md-6 col-lg-4">
         <h3>Deck ({{ deckCards.length }})</h3>
         <div v-if="group === 'region'">
-          <TSCardDeckRegions :cards=deckCards />
+          <TSCardDeckRegions :cards=potentialCards />
+        </div>
+        <div v-else-if="group === 'effect'">
+          <TSCardDeckEffects :cards=potentialCards />
         </div>
         <div v-else>
           <TSCard v-for='card in deckCards' :key=card.number :card=card display="min"/> 
@@ -88,6 +92,7 @@
 
 <script>
 import TSCardDeckRegions from './components/TSCardDeckRegions.vue'
+import TSCardDeckEffects from './components/TSCardDeckEffects.vue'
 import TSCardHand from './components/TSCardHand.vue'
 import TSCard from './components/TSCard.vue'
 import { mapMutations, mapGetters } from 'vuex'
@@ -146,7 +151,8 @@ export default {
   components: {
     TSCardHand,
     TSCard,
-    TSCardDeckRegions
+    TSCardDeckRegions,
+    TSCardDeckEffects
   },
   methods: {
     ...mapMutations(['newGame', 'addPhase', 'reshuffle']),
@@ -189,6 +195,11 @@ export default {
     },
     removedCards: function() {
       return sortCards(this.$store.getters.cardsInLocation("removed"), this.sort, this.order);
+    },
+    potentialCards: function() {
+      const deckCards = this.$store.getters.cardsInLocation("deck");
+      const inactiveCards = this.$store.getters.cardsInLocation("inactive");
+      return Array.prototype.concat(deckCards, inactiveCards);
     },
     savedGames: function() {
       return JSON.parse(localStorage.getItem('savedGames')) || [];

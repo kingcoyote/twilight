@@ -1,5 +1,5 @@
 <template>
-  <b-card sm: :class="['ts-card', 'float-left', 'm-1', card.phase, card.side, card.short]">
+  <b-card sm: :class="['ts-card', 'float-left', 'm-1', card.phase, card.side, card.short, card.location]">
     <div class="title mx-1 mt-1 mb-0" @click="myDisplay = myDisplay === 'full' && !['usa', 'ussr'].includes(card.location) ? 'min' : 'full' ">
       <svg height="46" width="46" class="star">
         <defs>
@@ -96,6 +96,7 @@ export default {
 
 <style>
   div.ts-card { border: none; border-radius: 0; background-color:#eee; }
+  div.ts-card.inactive div.title span { text-decoration:line-through; }
 
   div.ts-stack div.ts-card { width:100%; }
   @media(max-width:767.8px) {
