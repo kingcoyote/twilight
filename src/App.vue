@@ -1,14 +1,16 @@
 <template>
   <b-container id="twilight">
     <b-row>
-      <b-col sm>
+      <b-col class="col-lg-3">
         <h1>TS Track</h1>
       </b-col>
-      <b-col sm>
+      <b-col class="col-lg-9">
         <div class="float-right">
           <b-button-group class="my-1 mx-3">
-            <b-button squared variant="primary" v-b-modal.modal-new-game>New Game</b-button>
+            <b-button squared variant="primary" v-b-modal.modal-new-game>New</b-button>
+            <b-button squared variant="danger" @click=deleteGame(lastGame)>Delete</b-button>
           </b-button-group>
+          <b-form-select v-model="lastGame" :options="games" @change="loadGame(lastGame)" style="width:240px;"></b-form-select>
           <b-button-group class="my-1 mx-3">
             <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
             <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
@@ -122,21 +124,32 @@ function sortCards(cards, sort, order) {
 export default {
   name: 'Twilight',
   data: function() {
-    const savedGame = localStorage.getItem('savedGame');
+    let lastGame = localStorage.getItem('game.last');
 
-    if (savedGame) {
-      const savedGameData = JSON.parse(localStorage.getItem(savedGame))
-      this.$store.commit('loadGame', {name: savedGame, cards: savedGameData["cards"], phase: savedGameData["phase"]})
+    if (lastGame) {
+      const savedGameData = JSON.parse(localStorage.getItem("games." + lastGame))
+      this.$store.commit('loadGame', {name: lastGame, cards: savedGameData["cards"], phase: savedGameData["phase"]})
     } else {
       this.$store.commit("newGame", {name: new Date().toISOString()})
-      localStorage.setItem('lastGame', this.$store.getters.name)
+      localStorage.setItem('game.last', this.$store.getters.name)
+      lastGame = this.$store.getters.name;
     }
 
     this.$store.watch((state) => {
       const savedGameString = JSON.stringify(state)
-      localStorage.setItem(state.name, savedGameString)
-      localStorage.setItem('savedGame', state.name)
+      localStorage.setItem("games." + state.name, savedGameString)
+      localStorage.setItem('game.last', state.name)
+
+      let games = JSON.parse(localStorage.getItem('games') || "[]");
+      if (games.includes(state.name) === false) {
+        games.push(state.name);
+        localStorage.setItem("games", JSON.stringify(games))
+        this.games = games;
+        this.lastGame = state.name;
+      }
     });
+
+    const games = JSON.parse(localStorage.getItem('games') || "[]");
 
     return { 
       sort: "number",
@@ -145,7 +158,9 @@ export default {
         name: "new game",
         opts: []
       },
-      group: ""
+      group: "",
+      games,
+      lastGame
     }
   },
   components: {
@@ -177,6 +192,18 @@ export default {
     isSort: function(sort, order) {
       return this.sort === sort && this.order === order;
     },
+    loadGame: function(name) {
+      const savedGameData = JSON.parse(localStorage.getItem("games." + name));
+      const phase = savedGameData.phase;
+      const cards = savedGameData.cards;
+      this.$store.commit('loadGame', {name, phase, cards})
+    },
+    deleteGame: function(name) {
+      let games = JSON.parse(localStorage.getItem('games') || "[]");
+      games = games.filter((g) => g !== name);
+      localStorage.setItem("games", JSON.stringify(games))
+      this.games = games;
+    }
   },
   computed: {
     ...mapGetters(['cardsInLocation', 'phase']),
