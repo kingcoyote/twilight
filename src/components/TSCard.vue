@@ -16,19 +16,23 @@
         Sorry, your browser does not support inline SVG.
       </svg>
       <span v-if="!(card.flags && card.flags.includes('scoring')) || myDisplay !== 'full'">
+        <span v-if="card.ops > 0" :class="['ops', 'side-'+card.side]">{{ card.ops }}</span>
+        <span v-if="card.ops == 0" class="ops"><i class="bi-star-half" /></span>&nbsp;
         <span class="name">{{ card.name }}</span><span class="remove" v-if="card.flags && card.flags.includes('remove')">*</span>
       </span>
-      <b-dropdown v-if="myDisplay !== 'full'" right size="sm" class="card-opts dropdown float-right d-block">
-        <b-dropdown-item @click="moveCard({card, destination:'usa'})"><i class="bi-arrow-left-short to-usa"></i> To USA</b-dropdown-item>
-        <b-dropdown-item @click="moveCard({card, destination:'ussr'})"><i class="bi-arrow-right-short to-ussr"></i> To USSR</b-dropdown-item>
-        <b-dropdown-divider />
-        <b-dropdown-item @click="moveCard({card, destination:'deck'})"><i class="bi-arrow-repeat to-deck"></i> Deck</b-dropdown-item>
-        <b-dropdown-divider />
-        <b-dropdown-item @click="moveCard({card, destination:'discard'})"><i class="bi-arrow-down-short to-discard"></i> Discard</b-dropdown-item>
-        <b-dropdown-item v-if="card.flags && card.flags.includes('remove')" @click="moveCard({card, destination:'removed'})"><i class="bi-trash to-removed"></i> Remove</b-dropdown-item>
-      </b-dropdown>
+      <b-button-toolbar class="card-opts toolbar text-center float-right">
+        <b-button-group>
+          <b-button v-if="card.location !== 'deck' && card.number != 6" @click="moveCard({card, destination:'deck'})" class="to-deck" variant="success"><i class="bi-arrow-repeat to-deck"></i></b-button>
+          <b-button v-if="card.location !== 'discard' && card.number != 6 && card.number != 38" @click="moveCard({card, destination:'discard'})" class="to-discard"><i class="bi-arrow-down-short to-discard"></i></b-button>
+          <b-button v-if="card.flags && card.flags.includes('remove') && card.location !== 'removed'" @click="moveCard({card, destination:'removed'})" class="to-removed"><i class="bi-trash to-removed"></i></b-button>
+        </b-button-group>
+        <b-button-group>
+          <b-button v-if="card.location !== 'usa'" @click="moveCard({card, destination:'usa'})" class="to-usa"><i class="bi-arrow-left-short"></i></b-button>
+          <b-button v-if="card.location !== 'ussr'" @click="moveCard({card, destination:'ussr'})" class="to-ussr"><i class="bi-arrow-right-short"></i></b-button>
+        </b-button-group>
+      </b-button-toolbar>
     </div>
-    <div v-if="myDisplay === 'full'">
+    <div v-if="myDisplay === 'full'" class="body">
       <div class="p-2" v-if="card.flags && card.flags.includes('scoring')">
         <table class="table table-striped scoring">
           <thead>
@@ -95,21 +99,24 @@ export default {
 </script>
 
 <style>
+  
+
   div.ts-card { border: none; border-radius: 0; background-color:#eee; }
   div.ts-card.loc-inactive div.title span { text-decoration:line-through; }
 
   div.ts-stack div.ts-card { width:100%; }
+  div.container.view-slim div.ts-card { width:100%; flex:1;}
   @media(max-width:767.8px) {
-    div.ts-hand div.ts-card { min-width:100%; max-width:100%; width:100%; }
+    div.container.view-full div.ts-hand div.ts-card { min-width:100%; max-width:100%; width:100%; }
   }
   @media(min-width:768px) {
-    div.ts-hand div.ts-card { min-width:calc(50% - 8px); max-width:calc(50% - 8px); }
+    div.container.view-full div.ts-hand div.ts-card { min-width:calc(50% - 8px); max-width:calc(50% - 8px); }
   }
   @media(min-width:992px) {
-    div.ts-hand div.ts-card { min-width:calc(33% - 8px); max-width:calc(33% - 8px); }
+    div.container.view-full div.ts-hand div.ts-card { min-width:calc(33% - 8px); max-width:calc(33% - 8px); }
   }
   @media(min-width:1200px) {
-    div.ts-hand div.ts-card { min-width:calc(25% - 8px); max-width:calc(25% - 8px); }
+    div.container.view-full div.ts-hand div.ts-card { min-width:calc(25% - 8px); max-width:calc(25% - 8px); }
   }
   div.ts-card div.card-body { padding:0; }
   div.ts-card svg { display:inline-block; margin-top:-10px; margin-bottom:-10px; }
@@ -125,7 +132,7 @@ export default {
   /* set the title bg for each phase */
   div.title { display:inline-block; margin-top:5px; margin-bottom:5px; border:1px solid black; padding-right:5px; width:calc(100% - 10px)}
   div.ts-card div.title { color: white; max-width:100% }
-  div.ts-card div.title .name { display:inline-flex; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:75%;}
+  div.ts-card div.title .name { display:inline-flex; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; max-width:55%;}
   div.ts-card.phase-early div.title { background-color:rgb(0, 171, 202); }
   div.ts-card.phase-mid div.title { background-color:rgb(0,119,139); }
   div.ts-card.phase-late div.title { background-color:rgb(0,79,92); }
@@ -168,6 +175,24 @@ export default {
   div.card.sasc tr:nth-child(even) td { background-color:#a0c987; }
 
   div.card div.not-held { border:1px solid black; background-color:red; color: yellow; text-align:center; font-weight: bold; }
+
+  div.container.view-full div.title div.card-opts { display:none; }
+  div.container.view-full div.title .name { max-width:70%; }
+
+  div.container.view-slim h3 { font-size:1.25em; }
+
+  div.container.view-slim div.ts-card svg { display:none; }
+  div.container.view-slim div.ts-card { margin-top:0 !important; margin-bottom: 0 !important;}
+  div.container.view-slim div.ts-card div.title { margin-top:0 !important; margin-bottom: 0 important!; border:none; background-color:transparent;}
+  div.container.view-slim div.ts-card.phase-early div.title { color:rgb(0, 171, 202); }
+  div.container.view-slim div.ts-card.phase-mid div.title { color:rgb(0,119,139); }
+  div.container.view-slim div.ts-card.phase-late div.title { color:rgb(0,79,92); }
+  div.container.view-slim div.ts-card div.body { display:none; }
+
+  div.container.view-full div.ts-card span.ops { display:none; }
+  div.container.view-slim div.ts-card.side-neutral span.ops { color: black; }
+  div.container.view-slim div.ts-card.side-ussr span.ops { color: red; }
+  div.container.view-slim div.ts-card.side-usa span.ops { color: blue; }
 
   @media screen and (min-width: 992px) { 
     div.card-opts.dropdown { display: hidden; } 

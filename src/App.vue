@@ -1,11 +1,12 @@
 <template>
-  <b-container id="twilight">
+  <b-container id="twilight" :class="['view-' + settings.view.toLowerCase()]">
     <b-row>
       <b-col class="col-lg-3">
         <h1>TS Track</h1>
       </b-col>
       <b-col class="col-lg-9">
         <div class="float-right">
+          <b-button squared class="my-1 mx-1" v-b-modal.modal-settings>Config</b-button>
           <b-button-group class="my-1 mx-3">
             <b-button squared variant="primary" v-b-modal.modal-new-game>New</b-button>
             <b-button squared variant="danger" @click=deleteGame(lastGame)>Delete</b-button>
@@ -16,6 +17,16 @@
             <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
             <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
           </b-button-group>
+          <b-modal id="modal-settings" title="Settings">
+            <b-form-select v-model="settings.view" :options="['Full', 'Slim']"></b-form-select>
+            <template #modal-footer>
+              <div class="w-100">
+                <b-button-group class="float-right">
+                  <b-button variant="primary" size="sm" @click="saveSettings(); $bvModal.hide('modal-settings')">Save</b-button>
+                </b-button-group>
+              </div>
+            </template>
+          </b-modal>
           <b-modal id="modal-new-game" title="New Game">
             <b-form-group id="input-game-name" label-for="input-game-name">
               <b-form-input id="input-game-name" v-model=newGameForm.name placeholder="Enter game name" required></b-form-input>
@@ -37,16 +48,26 @@
         </div>
       </b-col>
     </b-row>
-    <b-row id="usa" class="mb-3">
+    <b-row v-if="settings.view == 'Full'" id="usa" class="mb-3">
       <b-col sm>
         <h3>USA ({{ usaCards.length }})</h3>
         <TSCardHand :cards=usaCards cols=4 />
       </b-col>
     </b-row>
-    <b-row id="ussr" class="mb-3">
+    <b-row v-if="settings.view == 'Full'" id="ussr" class="mb-3">
       <b-col sm >
         <h3>USSR ({{ ussrCards.length }})</h3>
         <TSCardHand :cards=ussrCards cols=4 />
+      </b-col>
+    </b-row>
+    <b-row v-if="settings.view == 'Slim'" class="justify-content-center mb-3">
+      <b-col class="col-sm-4">
+        <h3>USA ({{ usaCards.length }})</h3>
+        <TSCard v-for='card in usaCards' :key=card.number :card=card display="min"/> 
+      </b-col>
+      <b-col class="col-sm-4">
+        <h3>USSR ({{ ussrCards.length }})</h3>
+        <TSCard v-for='card in ussrCards' :key=card.number :card=card display="min"/> 
       </b-col>
     </b-row>
     <b-row>
@@ -174,6 +195,7 @@ export default {
     });
 
     const games = JSON.parse(localStorage.getItem('games') || "[]");
+    const settings = JSON.parse(localStorage.getItem('settings') || '{"view":"Full"}');
 
     return { 
       sort: "alpha",
@@ -184,7 +206,8 @@ export default {
       },
       group: "",
       games,
-      lastGame
+      lastGame,
+      settings
     }
   },
   components: {
@@ -227,6 +250,10 @@ export default {
       games = games.filter((g) => g !== name);
       localStorage.setItem("games", JSON.stringify(games))
       this.games = games;
+    },
+    saveSettings: function() {
+      console.log(JSON.stringify(this.settings));
+      localStorage.setItem('settings', JSON.stringify(this.settings));
     }
   },
   computed: {

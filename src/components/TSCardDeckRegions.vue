@@ -3,9 +3,11 @@
     <div v-for="region in regions" :key=region>
       <h3>{{ region }}</h3>
       <TSCard v-for="card in regionCards(region)" :key=card.number :card=card display="min" />
-      <div v-for="country in countries(region)" :key=country >
-        <h4>{{ country }}</h4>
-        <TSCard v-for="card in regionCards(country)" :key=card.number :card=card display="min" />
+      <div v-for="country in countries(region)" :key=country>
+        <div v-if="regionCards(country).length > 0">
+          <h4>{{ country }}</h4>
+          <TSCard v-for="card in regionCards(country)" :key=card.number :card=card display="min" />
+        </div>
       </div>
     </div>
   </div>
