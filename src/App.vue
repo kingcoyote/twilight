@@ -51,6 +51,7 @@
     </b-row>
     <b-row>
       <b-button-toolbar class="mx-auto">
+        <b-button :variant="isSort('playdek', 'asc') ? 'primary' : 'secondary'" @click="setSort('playdek', 'asc')">Playdek</b-button>
         <b-button-group class="mx-2">
           <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
           <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
@@ -99,6 +100,22 @@ import TSCardHand from './components/TSCardHand.vue'
 import TSCard from './components/TSCard.vue'
 import { mapMutations, mapGetters } from 'vuex'
 
+function playdek_score(card) {
+  let score = 0;
+  if (card.ops === 0) {
+    score += 1000;
+  }
+  if (card.side === "usa") {
+    score += 200;
+  } else if (card.side === "ussr") {
+    score += 100;
+  }
+
+  score += (4 - card.ops) * 10;
+
+  return score;
+}
+
 function sortCards(cards, sort, order) {
   const filterName = function(name) {
     return name.toLowerCase().replace("the", "").replace("“", "").replace("”", "").trim();
@@ -111,6 +128,13 @@ function sortCards(cards, sort, order) {
       return filterName(a.name).localeCompare(filterName(b.name));
     } else if (sort === "ops") {
       return b.ops - a.ops;
+    } else if (sort === "playdek") {
+      let sca = playdek_score(a)
+      let scb = playdek_score(b)
+
+      if (sca == scb) return a.name.localeCompare(b.name)
+
+      return scb - sca;
     }
   })
 
@@ -152,7 +176,7 @@ export default {
     const games = JSON.parse(localStorage.getItem('games') || "[]");
 
     return { 
-      sort: "number",
+      sort: "alpha",
       order: "asc",
       newGameForm: {
         name: "new game",
