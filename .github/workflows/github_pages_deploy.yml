@@ -37,7 +37,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:
           # Set a generated GITHUB_TOKEN for pushing to the remote branch.
-          github_token: ${{ secrets.GHPAGES_TOKEN }}
+          personal_token: ${{ secrets.GHPAGES_TOKEN }}
           external_repository: kingcoyote/kingcoyote.github.io
           # Set a target branch for deployment.
           publish_branch: main
