@@ -1,6 +1,6 @@
 <template>
-  <b-card sm: :class="['ts-card', 'float-left', 'm-1', 'phase-' + card.phase, 'side-' + card.side, card.short, 'loc-' + card.location]">
-    <div class="title mx-1 mt-1 mb-0" @click="myDisplay = myDisplay === 'full' && !['usa', 'ussr'].includes(card.location) ? 'min' : 'full' ">
+  <b-card sm: :class="['ts-card', 'float-left', 'm-1', 'phase-' + card.phase, 'side-' + card.side, card.short, 'loc-' + card.location, 'disp-'+ myDisplay]">
+    <div class="title mx-1 mt-1 mb-0" @click="myDisplay = myDisplay === 'full' ? 'min' : 'full' ">
       <svg height="46" width="46" class="star">
         <defs>
           <pattern id="neutralStripe" width="46" height="46" patternTransform="rotate(0 0 0)" patternUnits="userSpaceOnUse">
@@ -15,7 +15,7 @@
         <text v-if="card.ops > 0" style="font:Arial;font-size:32px;font-weight:bold;stroke-width:1px;" transform="translate(10,34)">{{ card.ops }}</text>
         Sorry, your browser does not support inline SVG.
       </svg>
-      <span v-if="!(card.flags && card.flags.includes('scoring')) || myDisplay !== 'full'">
+      <span>
         <span v-if="card.ops > 0" :class="['ops', 'side-'+card.side]">{{ card.ops }}</span>
         <span v-if="card.ops == 0" class="ops"><i class="bi-star-half" /></span>&nbsp;
         <span class="name">{{ card.name }}</span><span class="remove" v-if="card.flags && card.flags.includes('remove')">*</span>
@@ -55,7 +55,7 @@
         <div class="remove p-2" v-if="card.flags && card.flags.includes('remove')">Remove from play if used as an event.</div>
       </div>
     </div>
-    <template #footer v-if="myDisplay === 'full'" class="p-0">
+    <template #footer v-if="myDisplay === 'full'" class="footer p-0">
       <b-button-toolbar class="card-opts toolbar text-center">
         <b-button-group>
           <b-button v-if="card.location !== 'deck' && card.number != 6" @click="moveCard({card, destination:'deck'})" class="to-deck" variant="success"><i class="bi-arrow-repeat to-deck"></i></b-button>
@@ -176,7 +176,7 @@ export default {
 
   div.card div.not-held { border:1px solid black; background-color:red; color: yellow; text-align:center; font-weight: bold; }
 
-  div.container.view-full div.title div.card-opts { display:none; }
+  div.container.view-full div.ts-card.disp-full div.title div.card-opts { display:none; }
   div.container.view-full div.title .name { max-width:70%; }
 
   div.container.view-slim h3 { font-size:1.25em; }
@@ -187,7 +187,7 @@ export default {
   div.container.view-slim div.ts-card.phase-early div.title { color:rgb(0, 171, 202); }
   div.container.view-slim div.ts-card.phase-mid div.title { color:rgb(0,119,139); }
   div.container.view-slim div.ts-card.phase-late div.title { color:rgb(0,79,92); }
-  div.container.view-slim div.ts-card div.body { display:none; }
+  div.container.view-slim div.ts-card div.card-footer { display:none; }
 
   div.container.view-full div.ts-card span.ops { display:none; }
   div.container.view-slim div.ts-card.side-neutral span.ops { color: black; }
