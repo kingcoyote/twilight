@@ -61,32 +61,32 @@
       </b-col>
     </b-row>
     <b-row v-if="settings.view == 'Slim'" class="justify-content-center mb-3">
-      <b-col class="col-sm-4">
+      <b-col class="col-12 col-md-4 col-sm-6">
         <h3>USA ({{ usaCards.length }})</h3>
         <TSCard v-for='card in usaCards' :key=card.number :card=card display="min"/> 
       </b-col>
-      <b-col class="col-sm-4">
+      <b-col class="col-12 col-md-4 col-sm-6">
         <h3>USSR ({{ ussrCards.length }})</h3>
         <TSCard v-for='card in ussrCards' :key=card.number :card=card display="min"/> 
       </b-col>
     </b-row>
-    <b-row>
-      <b-button-toolbar class="mx-auto">
-        <b-button :variant="isSort('playdek', 'asc') ? 'primary' : 'secondary'" @click="setSort('playdek', 'asc')">Playdek</b-button>
-        <b-button-group class="mx-2">
+    <b-row class="mx-auto">
+      <b-button-toolbar class="mx-auto text-center">
+        <b-button :variant="isSort('playdek', 'asc') ? 'primary' : 'secondary'" class="mx-2 my-1" @click="setSort('playdek', 'asc')">Playdek</b-button>
+        <!-- <b-button-group class="mx-2">
           <b-button :variant="isSort('number', 'asc') ? 'primary' : 'secondary'" @click="setSort('number', 'asc')"><i class="bi-sort-numeric-down"></i></b-button>
           <b-button :variant="isSort('number', 'desc') ? 'primary' : 'secondary'" @click="setSort('number', 'desc')"><i class="bi-sort-numeric-up"></i></b-button>
-        </b-button-group>
-        <b-button-group class="mx-2">
+        </b-button-group> -->
+        <b-button-group class="mx-2 my-1">
           <b-button :variant="isSort('alpha', 'asc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'asc')"><i class="bi-sort-alpha-down"></i></b-button>
           <b-button :variant="isSort('alpha', 'desc') ? 'primary' : 'secondary'" @click="setSort('alpha', 'desc')"><i class="bi-sort-alpha-up"></i></b-button>
         </b-button-group>
-        <b-button-group class="mx-2">
+        <b-button-group class="mx-2 my-1">
           <b-button :variant="isSort('ops', 'asc') ? 'primary' : 'secondary'" @click="setSort('ops', 'asc')"><i class="bi-sort-down"></i></b-button>
           <b-button :variant="isSort('ops', 'desc') ? 'primary' : 'secondary'" @click="setSort('ops', 'desc')"><i class="bi-sort-up"></i></b-button>
         </b-button-group>
-        <b-button class="mx-2" :variant="group == 'region' ? 'primary' : 'secondary'" @click="setGroup('region')">Region</b-button>
-        <b-button class="mx-2" :variant="group == 'effect' ? 'primary' : 'secondary'" @click="setGroup('effect')">Effect</b-button>
+        <b-button class="mx-2 my-1" :variant="group == 'region' ? 'primary' : 'secondary'" @click="setGroup('region')">Region</b-button>
+        <b-button class="mx-2 my-1" :variant="group == 'effect' ? 'primary' : 'secondary'" @click="setGroup('effect')">Effect</b-button>
       </b-button-toolbar>
     </b-row>
     <b-row id="stacks" class="mb-3">
