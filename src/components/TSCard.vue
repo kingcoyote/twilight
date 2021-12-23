@@ -189,6 +189,8 @@ export default {
   div.container.view-slim div.ts-card.phase-late div.title { color:rgb(0,79,92); }
   div.container.view-slim div.ts-card div.card-footer { display:none; }
 
+  div.container.view-slim div.ts-card div.body { background-color:#FBFBFB; }
+
   div.container.view-full div.ts-card span.ops { display:none; }
   div.container.view-slim div.ts-card.side-neutral span.ops { color: black; }
   div.container.view-slim div.ts-card.side-ussr span.ops { color: red; }

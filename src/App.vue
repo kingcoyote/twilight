@@ -6,19 +6,22 @@
       </b-col>
       <b-col class="col-lg-9">
         <div class="float-right">
-          <b-button squared class="my-1 mx-1" v-b-modal.modal-settings>Config</b-button>
+          <b-button class="my-1 mx-1" v-b-modal.modal-settings>Config</b-button>
           <b-button-group class="my-1 mx-3">
-            <b-button squared variant="primary" v-b-modal.modal-new-game>New</b-button>
-            <b-button squared variant="danger" @click=deleteGame(lastGame)>Delete</b-button>
+            <b-button variant="primary" v-b-modal.modal-new-game>New</b-button>
+            <b-button variant="danger" @click=deleteGame(lastGame)>Delete</b-button>
           </b-button-group>
           <b-form-select v-model="lastGame" :options="games" @change="loadGame(lastGame)" style="width:240px;"></b-form-select>
           <b-button-group class="my-1 mx-3">
-            <b-button squared variant="primary" @click="reshuffle">Reshuffle</b-button>
-            <b-button squared v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
-            <b-button squared v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
+            <b-button variant="primary" @click="reshuffle">Reshuffle</b-button>
+            <b-button v-if="phase === 'early'" variant="warning" @click="addMidWar">Add Mid-War Cards</b-button>
+            <b-button v-if="phase === 'mid'" variant="warning" @click="addLateWar">Add Late-War Cards</b-button>
           </b-button-group>
           <b-modal id="modal-settings" title="Settings">
-            <b-form-select v-model="settings.view" :options="['Full', 'Slim']"></b-form-select>
+            <b-form-group id="settings-view" label-for="settings-view">
+              Display Mode
+              <b-form-select v-model="settings.view" :options="['Full', 'Slim']"></b-form-select>
+            </b-form-group>
             <template #modal-footer>
               <div class="w-100">
                 <b-button-group class="float-right">
@@ -111,6 +114,15 @@
         <TSCard v-for='card in removedCards' :key=card.number :card=card display="min"/> 
       </b-col>
     </b-row>
+    <b-row class="text-center">
+      <b-col>
+        <p>
+          Created by Steve Phillips | 
+          <a href="https://github.com/kingcoyote/twilight">GitHub</a> | 
+          <a href="https://github.com/kingcoyote/twilight/issues">Issues</a>
+        </p>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -195,7 +207,7 @@ export default {
     });
 
     const games = JSON.parse(localStorage.getItem('games') || "[]");
-    const settings = JSON.parse(localStorage.getItem('settings') || '{"view":"Full"}');
+    const settings = JSON.parse(localStorage.getItem('settings') || '{"view":"Slim"}');
 
     return { 
       sort: "alpha",
