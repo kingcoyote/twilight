@@ -59,7 +59,9 @@ describe('twilight store', () => {
         expect(state.cards[3].location).to.equal("removed")
         expect(state.cards[4].location).to.equal("deck")
     })
-    it("adds mid war phase cards", () => {
+    it("adds mid/late war phase cards", () => {
+        // 103 total cards in the base game - 36 early, 46 mid, 21 late.
+        // but The China Card starts in USSR's hand, so subtract 1 for each phase's expected counts
         const state = { }
         newGame(state)
         expect(state.phase).to.equal("early")
@@ -67,7 +69,27 @@ describe('twilight store', () => {
 
         addPhase(state, { phase: "mid" })
         expect(state.phase).to.equal("mid")
-        expect(getters.cardsInLocation(state)("deck").length).to.equal(83)
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(81)
+
+        addPhase(state, { phase: "late" })
+        expect(state.phase).to.equal("late")
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(102)
+    })
+    it("adds mid/late war phase cards (with optional cards)", () => {
+        // 103 total cards in the game with optional cards - 39 early, 48 mid, 23 late.
+        // but The China Card starts in USSR's hand, so subtract 1 for each phase's expected counts
+        const state = { }
+        newGame(state, {optional: true})
+        expect(state.phase).to.equal("early")
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(38)
+
+        addPhase(state, { phase: "mid" })
+        expect(state.phase).to.equal("mid")
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(86)
+
+        addPhase(state, { phase: "late" })
+        expect(state.phase).to.equal("late")
+        expect(getters.cardsInLocation(state)("deck").length).to.equal(109)
     })
     it("gets cards with state", () => {
         const state = { }

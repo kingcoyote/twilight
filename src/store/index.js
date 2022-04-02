@@ -51,7 +51,7 @@ export const mutations = {
   },
   addPhase(state, data) {
     state.cards
-      .filter((card) => card.phase === data.phase)
+      .filter((card) => card.phase === data.phase && card.location !== "disabled")
       .forEach((card) => card.location = "deck")
 
     state.phase = data.phase;
