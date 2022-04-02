@@ -76,7 +76,7 @@ describe('twilight store', () => {
         expect(getters.cardsInLocation(state)("deck").length).to.equal(102)
     })
     it("adds mid/late war phase cards (with optional cards)", () => {
-        // 103 total cards in the game with optional cards - 39 early, 48 mid, 23 late.
+        // 110 total cards in the game with optional cards - 39 early, 48 mid, 23 late.
         // but The China Card starts in USSR's hand, so subtract 1 for each phase's expected counts
         const state = { }
         newGame(state, {optional: true})
