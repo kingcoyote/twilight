@@ -118,4 +118,16 @@ export default [
     
     { number: 109, name: "Yuri and Samantha", side: "ussr", location: "disabled", phase: "late", ops: 2, flags: ["optional", "remove", "VP"], text:"The USSR receives 1 VP for each US Coup Attempt performed during the remainder of the Turn."  },
     { number: 110, name: "AWACS Sales to Saudis", side: "usa", location: "disabled", phase: "late", ops: 3, region: ["Saudi Arabia"], flags: ["optional", "remove"], text:"Add 2 US Influence to Saudi Arabia. This Event prevents the “#56 – Muslim Revolution” card from being played as an Event."  },
+
+    /* Promo Pack #1 */
+    { number: 111, name: "Stanislav Petrov", side: "neutral", location: "disabled", phase: "late", ops: 3, flags: ["promo1", "remove", "DEFCON"], text:"Play only if DEFCON is 2. Set DEFCON to 4 or 5." },
+    { number: 112, name: "Berlin Wall", side: "ussr", location: "disabled", phase: "mid", ops: 2, region: ["E. Germany"], flags: ["promo1", "remove", "Space Race"], text:"Add 2 influence in East Germany and, if you are behind or tied with the US in the Space Race, advance your Space Race marker by one box." },
+    { number: 113, name: "Mobutu Sese Seko", side: "usa", location: "disabled", phase: "mid", ops: 2, region: ["Africa"], flags: ["promo1", "remove"], text:"Zaire's stability number permanently becomes 3. Add 2 US influence in Zaire." },
+    { number: 114, name: "Non-Aligned Movement", side: "neutral", location: "disabled", phase: "mid", ops: 1, region: ["India", "Africa", "Asia", "Middle East", "South America"], flags: ["promo1", "Remove"], text:"Select India or a country in Africa, Southeast Asia, the Middle East, or South America with at least 2 US and 2 USSR Influence. Remove all Influence from that country, then take the next four cards from the top of the draw pile and put them in the discard pile (reshuffling if necessary)." },
+
+    /* Promo Pack #2 */
+    { number: 115, name: "Kremlin Flu", side: "usa", location: "disabled", phase: "early", ops: 2, flags: ["promo2"], text:"US takes Operations as if this card were played as Operations. USSR must play a scoring card on its next Action Roundif it holds one; if no scoring card is in the USSR hand, the USSR forfeits its next Action Round." },
+    { number: 116, name: "First Lightning", side: "ussr", location: "disabled", phase: "early", ops: 2, flags: ["promo2", "remove", "DEFCON"], text:"Play at the same time you play a card with a US-affiliated Event for its Operations. Ignore the event text and place the card in the discard pile. Reduce DEFCON by 1 if this card is played for Operations or its Event." },
+    { number: 117, name: "Who Lost China", side: "ussr", location: "disabled", phase: "early", ops: 1, flags: ["promo2", "MilOps"], text:"If the USSR holds the China Card, reset US Military Operations to zero. If playing with the Chinese Civil War variant, this card cannot be played if Chinese Civil War is still in effect." },
+    { number: 118, name: "“Don't Wait For The Translation”", side: "usa", location: "disabled", phase: "mid", ops: 3, flags: ["promo2", "remove", "VP"], text:"If the US is behind in Military Operations, the US scores 2 VP." },
 ];
