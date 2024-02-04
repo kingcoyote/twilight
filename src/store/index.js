@@ -17,6 +17,20 @@ export const mutations = {
         .forEach((card) => card.location = "inactive")
     }
 
+    // if promo pack 1 is true, turn disabled cards to inactive
+    if (data.promo1 ?? false) {
+      defaultCards
+        .filter((card) => (card.flags || []).includes("promo1"))
+        .forEach((card) => card.location = "inactive")
+    }
+
+    // if promo pack 2 is true, turn disabled cards to inactive
+    if (data.promo2 ?? false) {
+      defaultCards
+        .filter((card) => (card.flags || []).includes("promo2"))
+        .forEach((card) => card.location = "inactive")
+    }
+
     // set all early inactive cards to deck
     defaultCards
       .filter((card) => card.phase === "early" && card.location !== "disabled")
